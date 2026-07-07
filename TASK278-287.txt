@@ -1,11 +1,16 @@
+
+
+
 TASK278
+
 CLASS Owner
+
 Attributes
-    ownerId : Number
-    ownerName : TEXT
-    phone : TEXT
-    address : TEXT
-    pets : LIST<Pet>
+    PRIVATE ownerId : Number
+    PRIVATE ownerName : TEXT
+    PRIVATE phone : TEXT
+    PRIVATE address : TEXT
+    PRIVATE pets : LIST<Pet>
 
 CONSTRUCTOR(n : TEXT, p : TEXT, a : TEXT, petList : LIST<Pet>)
     SET ownerName TO n
@@ -15,25 +20,28 @@ CONSTRUCTOR(n : TEXT, p : TEXT, a : TEXT, petList : LIST<Pet>)
 END CONSTRUCTOR
 
 METHODS
-    getOwnerName()
-        DISPLAY ownerName
+
+    PUBLIC getOwnerName()
+        RETURN ownerName
     END METHOD
 
-    setOwnerName(newName : TEXT)
+    PUBLIC setOwnerName(newName : TEXT)
         SET ownerName TO newName
     END METHOD
 
-    addPet(newPet : Pet)
+    PUBLIC addPet(newPet : Pet)
         ADD newPet TO pets
     END METHOD
+
 END CLASS
 
 
 CLASS Species
+
 Attributes
-    speciesId : Number
-    speciesName : TEXT
-    careRequirements : TEXT
+    PRIVATE speciesId : Number
+    PRIVATE speciesName : TEXT
+    PRIVATE careRequirements : TEXT
 
 CONSTRUCTOR(n : TEXT, c : TEXT)
     SET speciesName TO n
@@ -41,24 +49,26 @@ CONSTRUCTOR(n : TEXT, c : TEXT)
 END CONSTRUCTOR
 
 METHODS
-    getSpeciesName()
-        DISPLAY speciesName
 
+    PUBLIC getSpeciesName()
+        RETURN speciesName
     END METHOD
 
-    getCareRequirements()
-        DISPLAY careRequirements
+    PUBLIC getCareRequirements()
+        RETURN careRequirements
     END METHOD
+
 END CLASS
 
 
 CLASS Pet
+
 Attributes
-    petId : Number
-    petName : TEXT
-    dateOfBirth : DATE
-    species : Species
-    medicalHistory : LIST<MedicalHistory>
+    PRIVATE petId : Number
+    PRIVATE petName : TEXT
+    PRIVATE dateOfBirth : DATE
+    PRIVATE species : Species
+    PRIVATE medicalHistory : LIST<MedicalHistory>
 
 CONSTRUCTOR(n : TEXT, d : DATE, s : Species, h : LIST<MedicalHistory>)
     SET petName TO n
@@ -68,30 +78,33 @@ CONSTRUCTOR(n : TEXT, d : DATE, s : Species, h : LIST<MedicalHistory>)
 END CONSTRUCTOR
 
 METHODS
-    getPetName()
-        DISPLAY petName
+
+    PUBLIC getPetName()
+        RETURN petName
     END METHOD
 
-    setPetName(newName : TEXT)
+    PUBLIC setPetName(newName : TEXT)
         SET petName TO newName
     END METHOD
 
-    getAge()
+    PUBLIC getAge()
         CALCULATE age FROM dateOfBirth
-        DISPLAY age
+        RETURN age
     END METHOD
 
-    addMedicalHistory(record : MedicalHistory)
+    PUBLIC addMedicalHistory(record : MedicalHistory)
         ADD record TO medicalHistory
     END METHOD
+
 END CLASS
 
 
 CLASS MedicalHistory
+
 Attributes
-    recordId : Number
-    recordDate : DATE
-    notes : TEXT
+    PRIVATE recordId : Number
+    PRIVATE recordDate : DATE
+    PRIVATE notes : TEXT
 
 CONSTRUCTOR(d : DATE, n : TEXT)
     SET recordDate TO d
@@ -99,21 +112,24 @@ CONSTRUCTOR(d : DATE, n : TEXT)
 END CONSTRUCTOR
 
 METHODS
-    getNotes()
-        DISPLAY notes
+
+    PUBLIC getNotes()
+        RETURN notes
     END METHOD
 
-    setNotes(newNotes : TEXT)
+    PUBLIC setNotes(newNotes : TEXT)
         SET notes TO newNotes
     END METHOD
+
 END CLASS
 
 
 CLASS Veterinarian
+
 Attributes
-    vetId : Number
-    vetName : TEXT
-    specialization : TEXT
+    PRIVATE vetId : Number
+    PRIVATE vetName : TEXT
+    PRIVATE specialization : TEXT
 
 CONSTRUCTOR(n : TEXT, s : TEXT)
     SET vetName TO n
@@ -121,21 +137,24 @@ CONSTRUCTOR(n : TEXT, s : TEXT)
 END CONSTRUCTOR
 
 METHODS
-    getVetName()
-        DISPLAY vetName
+
+    PUBLIC getVetName()
+        RETURN vetName
     END METHOD
 
-    performExamination()
+    PUBLIC performExamination()
         DISPLAY "Examination Completed"
     END METHOD
+
 END CLASS
 
 
 CLASS VitalSigns
+
 Attributes
-    temperature : REAL
-    heartRate : Number
-    respiratoryRate : Number
+    PRIVATE temperature : REAL
+    PRIVATE heartRate : Number
+    PRIVATE respiratoryRate : Number
 
 CONSTRUCTOR(t : REAL, h : Number, r : Number)
     SET temperature TO t
@@ -144,21 +163,26 @@ CONSTRUCTOR(t : REAL, h : Number, r : Number)
 END CONSTRUCTOR
 
 METHODS
-    isWithinSafeRange()
+
+    PUBLIC isWithinSafeRange()
+
         IF temperature OR heartRate OR respiratoryRate IS OUTSIDE SAFE RANGE
             RETURN FALSE
         ELSE
             RETURN TRUE
         END IF
+
     END METHOD
+
 END CLASS
 
 
 CLASS Treatment
+
 Attributes
-    treatmentId : Number
-    treatmentName : TEXT
-    cost : REAL
+    PRIVATE treatmentId : Number
+    PRIVATE treatmentName : TEXT
+    PRIVATE cost : REAL
 
 CONSTRUCTOR(n : TEXT, c : REAL)
     SET treatmentName TO n
@@ -166,18 +190,21 @@ CONSTRUCTOR(n : TEXT, c : REAL)
 END CONSTRUCTOR
 
 METHODS
-    getCost()
-        DISPLAY cost
+
+    PUBLIC getCost()
+        RETURN cost
     END METHOD
+
 END CLASS
 
 
 CLASS Examination
+
 Attributes
-    examinationId : Number
-    diagnosis : TEXT
-    vitalSigns : VitalSigns
-    treatments : LIST<Treatment>
+    PRIVATE examinationId : Number
+    PRIVATE diagnosis : TEXT
+    PRIVATE vitalSigns : VitalSigns
+    PRIVATE treatments : LIST<Treatment>
 
 CONSTRUCTOR(d : TEXT, v : VitalSigns, t : LIST<Treatment>)
     SET diagnosis TO d
@@ -186,28 +213,34 @@ CONSTRUCTOR(d : TEXT, v : VitalSigns, t : LIST<Treatment>)
 END CONSTRUCTOR
 
 METHODS
-    addTreatment(newTreatment : Treatment)
+
+    PUBLIC addTreatment(newTreatment : Treatment)
         ADD newTreatment TO treatments
     END METHOD
 
-    isUrgent()
+
+    PUBLIC isUrgent()
+
         IF vitalSigns.isWithinSafeRange() = FALSE
             DISPLAY "Urgent Examination"
         ELSE
             DISPLAY "Normal Examination"
         END IF
+
     END METHOD
+
 END CLASS
 
 
 CLASS Visit
+
 Attributes
-    visitId : Number
-    visitDate : DATE
-    owner : Owner
-    pet : Pet
-    veterinarian : Veterinarian
-    examinations : LIST<Examination>
+    PRIVATE visitId : Number
+    PRIVATE visitDate : DATE
+    PRIVATE owner : Owner
+    PRIVATE pet : Pet
+    PRIVATE veterinarian : Veterinarian
+    PRIVATE examinations : LIST<Examination>
 
 CONSTRUCTOR(d : DATE, o : Owner, p : Pet, v : Veterinarian, e : LIST<Examination>)
     SET visitDate TO d
@@ -217,35 +250,43 @@ CONSTRUCTOR(d : DATE, o : Owner, p : Pet, v : Veterinarian, e : LIST<Examination
     SET examinations TO e
 END CONSTRUCTOR
 
+
 METHODS
-    addExamination(newExam : Examination)
+
+    PUBLIC addExamination(newExam : Examination)
         ADD newExam TO examinations
     END METHOD
 
-    calculateTotalCost()
+
+    PUBLIC calculateTotalCost()
+
         SET total TO 0
+
         FOR EACH exam IN examinations
+
             FOR EACH treatment IN exam.treatments
-                total = total + treatment.cost
+                SET total TO total + treatment.cost
             END FOR
+
         END FOR
+
         DISPLAY total
+
     END METHOD
 
 
-\
-
-
 END CLASS
-
+-------------------
 TASK279
+
 CLASS Cinema
+
 Attributes
-    id : Number
-    cinemaName : TEXT
-    location : TEXT
-    films : LIST<Film>
-    screens : LIST<Screen>
+    PRIVATE id : Number
+    PRIVATE cinemaName : TEXT
+    PRIVATE location : TEXT
+    PRIVATE films : LIST<Film>
+    PRIVATE screens : LIST<Screen>
 
 CONSTRUCTOR(n : TEXT, l : TEXT, f : LIST<Film>, s : LIST<Screen>)
     SET cinemaName TO n
@@ -254,24 +295,31 @@ CONSTRUCTOR(n : TEXT, l : TEXT, f : LIST<Film>, s : LIST<Screen>)
     SET screens TO s
 END CONSTRUCTOR
 
+
 METHODS
-    addFilm(newFilm : Film)
+
+    PUBLIC addFilm(newFilm : Film)
         ADD newFilm TO films
     END METHOD
 
-    addScreen(newScreen : Screen)
+
+    PUBLIC addScreen(newScreen : Screen)
         ADD newScreen TO screens
     END METHOD
+
 END CLASS
 
 
+
 CLASS Film
+
 Attributes
-    filmId : Number
-    title : TEXT
-    duration : Number
-    genre : TEXT
-    showtimes : LIST<Showtime>
+    PRIVATE filmId : Number
+    PRIVATE title : TEXT
+    PRIVATE duration : Number
+    PRIVATE genre : TEXT
+    PRIVATE showtimes : LIST<Showtime>
+
 
 CONSTRUCTOR(t : TEXT, d : Number, g : TEXT, s : LIST<Showtime>)
     SET title TO t
@@ -280,23 +328,30 @@ CONSTRUCTOR(t : TEXT, d : Number, g : TEXT, s : LIST<Showtime>)
     SET showtimes TO s
 END CONSTRUCTOR
 
+
 METHODS
-    getTitle()
-        DISPLAY title
+
+    PUBLIC getTitle()
+        RETURN title
     END METHOD
 
-    addShowtime(newShowtime : Showtime)
+
+    PUBLIC addShowtime(newShowtime : Showtime)
         ADD newShowtime TO showtimes
     END METHOD
+
 END CLASS
 
 
+
 CLASS Screen
+
 Attributes
-    screenId : Number
-    screenName : TEXT
-    seatingLayout : TEXT
-    capacity : Number
+    PRIVATE screenId : Number
+    PRIVATE screenName : TEXT
+    PRIVATE seatingLayout : TEXT
+    PRIVATE capacity : Number
+
 
 CONSTRUCTOR(n : TEXT, l : TEXT, c : Number)
     SET screenName TO n
@@ -304,76 +359,112 @@ CONSTRUCTOR(n : TEXT, l : TEXT, c : Number)
     SET capacity TO c
 END CONSTRUCTOR
 
+
 METHODS
-    getCapacity()
-        DISPLAY capacity
+
+    PUBLIC getCapacity()
+        RETURN capacity
     END METHOD
+
 END CLASS
 
 
+
 CLASS Showtime
+
 Attributes
-    showtimeId : Number
-    startTime : TIME
-    endTime : TIME
-    film : Film
-    screen : Screen
-    tickets : LIST<Ticket>
+    PRIVATE showtimeId : Number
+    PRIVATE startTime : TIME
+    PRIVATE endTime : TIME
+    PRIVATE film : Film
+    PRIVATE screen : Screen
+    PRIVATE tickets : LIST<Ticket>
+
 
 CONSTRUCTOR(s : TIME, e : TIME, f : Film, sc : Screen)
+
     IF NOT overlapsExistingShowtime(sc, s, e)
+
         SET startTime TO s
         SET endTime TO e
         SET film TO f
         SET screen TO sc
+        SET tickets TO EMPTY LIST
+
     ELSE
+
         DISPLAY "Showtime cannot be created."
+
     END IF
+
 END CONSTRUCTOR
 
+
 METHODS
-    addTicket(newTicket : Ticket)
+
+    PUBLIC addTicket(newTicket : Ticket)
         ADD newTicket TO tickets
     END METHOD
 
-    getAvailableSeats()
-        availableSeats = screen.capacity - SIZE(tickets)
-        DISPLAY availableSeats
+
+    PUBLIC getAvailableSeats()
+
+        SET availableSeats TO screen.capacity - SIZE(tickets)
+
+        RETURN availableSeats
+
     END METHOD
+
 END CLASS
+
 
 
 CLASS Ticket
+
 Attributes
-    ticketId : Number
-    customerName : TEXT
-    seatNumber : TEXT
-    showtime : Showtime
+    PRIVATE ticketId : Number
+    PRIVATE customerName : TEXT
+    PRIVATE seatNumber : TEXT
+    PRIVATE showtime : Showtime
+
 
 CONSTRUCTOR(c : TEXT, seat : TEXT, s : Showtime)
+
     IF seat IS NOT BOOKED IN s
+
         SET customerName TO c
         SET seatNumber TO seat
         SET showtime TO s
+
     ELSE
+
         DISPLAY "Seat already booked."
+
     END IF
+
 END CONSTRUCTOR
 
-METHODS
-    getSeatNumber()
-        DISPLAY seatNumber
-    END METHOD
-END CLASS
 
+METHODS
+
+    PUBLIC getSeatNumber()
+        RETURN seatNumber
+    END METHOD
+
+END CLASS
+---------------------
 TASK280
+
+
 CLASS Warehouse
+
 Attributes
-    warehouseId : Number
-    warehouseName : TEXT
-    location : TEXT
-    products : LIST<Product>
-    vendors : LIST<Vendor>
+    PRIVATE warehouseId : Number
+    PRIVATE warehouseName : TEXT
+    PRIVATE location : TEXT
+    PRIVATE products : LIST<Product>
+    PRIVATE vendors : LIST<Vendor>
+
 
 CONSTRUCTOR(n : TEXT, l : TEXT, p : LIST<Product>, v : LIST<Vendor>)
     SET warehouseName TO n
@@ -382,113 +473,199 @@ CONSTRUCTOR(n : TEXT, l : TEXT, p : LIST<Product>, v : LIST<Vendor>)
     SET vendors TO v
 END CONSTRUCTOR
 
+
 METHODS
-    addProduct(newProduct : Product)
+
+    PUBLIC addProduct(newProduct : Product)
         ADD newProduct TO products
     END METHOD
 
-    addVendor(newVendor : Vendor)
+
+    PUBLIC addVendor(newVendor : Vendor)
         ADD newVendor TO vendors
     END METHOD
+
 END CLASS
 
 
+
 CLASS Vendor
+
 Attributes
-    vendorId : Number
-    vendorName : TEXT
-    phone : TEXT
-    email : TEXT
-    reliabilityRating : REAL
-    products : LIST<Product>
+    PRIVATE vendorId : Number
+    PRIVATE vendorName : TEXT
+    PRIVATE phone : TEXT
+    PRIVATE email : TEXT
+    PRIVATE reliabilityRating : REAL
+    PRIVATE products : LIST<Product>
+
 
 CONSTRUCTOR(n : TEXT, p : TEXT, e : TEXT, r : REAL)
+
     SET vendorName TO n
     SET phone TO p
     SET email TO e
     SET reliabilityRating TO r
+    SET products TO EMPTY LIST
+
 END CONSTRUCTOR
 
+
 METHODS
-    updateReliability()
-    addProduct(newProduct : Product)
+
+    PUBLIC updateReliability(newRating : REAL)
+        SET reliabilityRating TO newRating
+    END METHOD
+
+
+    PUBLIC addProduct(newProduct : Product)
+        ADD newProduct TO products
+    END METHOD
+
 END CLASS
+
 
 
 CLASS Category
+
 Attributes
-    categoryId : Number
-    categoryName : TEXT
+    PRIVATE categoryId : Number
+    PRIVATE categoryName : TEXT
+
 
 CONSTRUCTOR(n : TEXT)
+
     SET categoryName TO n
+
 END CONSTRUCTOR
+
 END CLASS
+
 
 
 CLASS StorageBin
+
 Attributes
-    binId : Number
-    location : TEXT
-    quantity : Number
+    PRIVATE binId : Number
+    PRIVATE location : TEXT
+    PRIVATE quantity : Number
+
 
 CONSTRUCTOR(l : TEXT, q : Number)
+
     SET location TO l
     SET quantity TO q
+
 END CONSTRUCTOR
 
+
 METHODS
-    updateQuantity(q : Number)
-        SET quantity TO q
+
+    PUBLIC addStock(amount : Number)
+
+        SET quantity TO quantity + amount
+
     END METHOD
+
+
+    PUBLIC removeStock(amount : Number)
+
+        IF amount <= quantity
+
+            SET quantity TO quantity - amount
+
+        ELSE
+
+            DISPLAY "Insufficient Stock"
+
+        END IF
+
+    END METHOD
+
 END CLASS
+
 
 
 CLASS Product
+
 Attributes
-    productId : Number
-    productName : TEXT
-    category : Category
-    vendor : Vendor
-    bins : LIST<StorageBin>
-    movements : LIST<StockMovement>
+    PRIVATE productId : Number
+    PRIVATE productName : TEXT
+    PRIVATE category : Category
+    PRIVATE vendor : Vendor
+    PRIVATE bins : LIST<StorageBin>
+    PRIVATE movements : LIST<StockMovement>
+
 
 CONSTRUCTOR(n : TEXT, c : Category, v : Vendor)
+
     SET productName TO n
     SET category TO c
     SET vendor TO v
+    SET bins TO EMPTY LIST
+    SET movements TO EMPTY LIST
+
 END CONSTRUCTOR
 
+
 METHODS
-    calculateStock()
-        total = SUM OF quantity IN bins
+
+
+    PUBLIC calculateStock()
+
+        SET total TO 0
+
+        FOR EACH bin IN bins
+
+            SET total TO total + bin.quantity
+
+        END FOR
+
         DISPLAY total
+
     END METHOD
 
-    addMovement(m : StockMovement)
+
+
+    PUBLIC addMovement(m : StockMovement)
+
         IF m.type = "OUT" AND m.quantity > calculateStock()
+
             DISPLAY "Insufficient Stock"
+
         ELSE
+
             ADD m TO movements
-        END I
+
+        END IF
+
     END METHOD
+
+
 END CLASS
+
 
 
 CLASS StockMovement
+
 Attributes
-    movementId : Number
-    movementDate : DATE
-    type : TEXT
-    quantity : Number
+    PRIVATE movementId : Number
+    PRIVATE movementDate : DATE
+    PRIVATE type : TEXT
+    PRIVATE quantity : Number
+
 
 CONSTRUCTOR(d : DATE, t : TEXT, q : Number)
+
     SET movementDate TO d
     SET type TO t
     SET quantity TO q
-END CONSTRUCTOR
-END CLASS
 
+END CONSTRUCTOR
+
+
+END CLASS
+-----------------------
 TASK281
 CLAS SchoolClass
 attributres
@@ -598,7 +775,7 @@ CONSTRUCTOR(n : TEXT, sy : TEXT)
     SET syllabus TO sy
 END CONSTRUCTOR
 END CLASS
-
+----------------------------
 TASK282
 
 CLASS Policy
@@ -693,16 +870,14 @@ METHODS
         END IF
     END METHOD
 END CLASS
-
-TASK283
-
-
+-------------------
 CLASS Dealership
+
 Attributes
-    dealershipId : Number
-    dealershipName : TEXT
-    vehicles : LIST<Vehicle>
-    customers : LIST<Customer>
+    PRIVATE dealershipId : Number
+    PRIVATE dealershipName : TEXT
+    PRIVATE vehicles : LIST<Vehicle>
+    PRIVATE customers : LIST<Customer>
 
 CONSTRUCTOR(n : TEXT, v : LIST<Vehicle>, c : LIST<Customer>)
     SET dealershipName TO n
@@ -710,114 +885,171 @@ CONSTRUCTOR(n : TEXT, v : LIST<Vehicle>, c : LIST<Customer>)
     SET customers TO c
 END CONSTRUCTOR
 
+
 METHODS
+
     addVehicle(newVehicle : Vehicle)
         ADD newVehicle TO vehicles
     END METHOD
 
+
     addCustomer(newCustomer : Customer)
         ADD newCustomer TO customers
     END METHOD
+
 END CLASS
 
 
+
 CLASS Model
+
 Attributes
-    modelId : Number
-    modelName : TEXT
-    basePrice : REAL
+    PRIVATE modelId : Number
+    PRIVATE modelName : TEXT
+    PRIVATE basePrice : REAL
+
 
 CONSTRUCTOR(n : TEXT, b : REAL)
     SET modelName TO n
     SET basePrice TO b
 END CONSTRUCTOR
+
 END CLASS
+
 
 
 CLASS Vehicle
+
 Attributes
-    vehicleId : Number
-    vin : TEXT
-    model : Model
-    listedPrice : REAL
-    availabilityStatus : TEXT
+    PRIVATE vehicleId : Number
+    PRIVATE vin : TEXT
+    PRIVATE model : Model
+    PRIVATE listedPrice : REAL
+    PRIVATE availabilityStatus : TEXT
+
 
 CONSTRUCTOR(v : TEXT, m : Model, p : REAL)
+
+    SET vin TO v
+    SET model TO m
+
     IF p < m.basePrice
-        DISPLAY "Listed price cannot be below base price"
+        SET listedPrice TO m.basePrice
     ELSE
-        SET vin TO v
-        SET model TO m
         SET listedPrice TO p
-        SET availabilityStatus TO "Available"
     END IF
+
+    SET availabilityStatus TO "Available"
+
 END CONSTRUCTOR
 
+
 METHODS
+
     markAsSold()
         SET availabilityStatus TO "Sold"
     END METHOD
-END CLASS 
+
+END CLASS
+
 
 
 CLASS Customer
+
 Attributes
-    customerId : Number
-    customerName : TEXT
-    phone : TEXT
-    email : TEXT
+    PRIVATE customerId : Number
+    PRIVATE customerName : TEXT
+    PRIVATE phone : TEXT
+    PRIVATE email : TEXT
+
 
 CONSTRUCTOR(n : TEXT, p : TEXT, e : TEXT)
+
     SET customerName TO n
     SET phone TO p
     SET email TO e
+
 END CONSTRUCTOR
+
 END CLASS
+
 
 
 CLASS AddOnFeature
+
 Attributes
-    featureId : Number
-    featureName : TEXT
-    cost : REAL
+    PRIVATE featureId : Number
+    PRIVATE featureName : TEXT
+    PRIVATE cost : REAL
+
 
 CONSTRUCTOR(n : TEXT, c : REAL)
+
     SET featureName TO n
     SET cost TO c
+
 END CONSTRUCTOR
+
 END CLASS
+
 
 
 CLASS Sale
+
 Attributes
-    saleId : Number
-    customer : Customer
-    vehicle : Vehicle
-    agreedPrice : REAL
-    addOnFeatures : LIST<AddOnFeature>
+    PRIVATE saleId : Number
+    PRIVATE customer : Customer
+    PRIVATE vehicle : Vehicle
+    PRIVATE agreedPrice : REAL
+    PRIVATE addOnFeatures : LIST<AddOnFeature>
+
 
 CONSTRUCTOR(c : Customer, v : Vehicle, p : REAL)
+
     IF v.availabilityStatus = "Sold"
+
         DISPLAY "Vehicle already sold"
+
     ELSE
+
         SET customer TO c
         SET vehicle TO v
         SET agreedPrice TO p
+        SET addOnFeatures TO EMPTY LIST
+
         CALL vehicle.markAsSold()
+
     END IF
+
 END CONSTRUCTOR
 
+
+
 METHODS
+
     addFeature(f : AddOnFeature)
+
         ADD f TO addOnFeatures
+
     END METHOD
+
+
 
     calculateTotalPrice()
-        total = agreedPrice + SUM OF cost IN addOnFeatures
-        DISPLAY total
-    END METHOD
-END CLASS
 
+        SET total TO agreedPrice
+
+        FOR EACH feature IN addOnFeatures
+            SET total TO total + feature.cost
+        END FOR
+
+        RETURN total
+
+    END METHOD
+
+
+END CLASS
+-----------------------------------
 TASK284
 CLASS WeddingEvent
 Attributes
@@ -924,7 +1156,7 @@ CONSTRUCTOR(n : TEXT, p : TEXT)
     SET phone TO p
 END CONSTRUCTOR
 END CLASS
-
+----------------------------------------------------
 TASK285
 CLASS Concert
 Attributes
@@ -1036,112 +1268,450 @@ CONSTRUCTOR(s : TEXT, t : TicketTier, f : TEXT)
     SET price TO t.price
 END CONSTRUCTOR
 END CLASS
-
+----------------------------
 TASK286
-  ELSECLASS Sprint
+CLASS Sprint
+
 Attributes
-    sprintId : Number
-    sprintName : TEXT
-    backlog : Backlog
-    tasks : LIST<Task>
+    PRIVATE sprintId : Number
+    PRIVATE sprintName : TEXT
+    PRIVATE backlog : Backlog
+    PRIVATE tasks : LIST<Task>
+
 
 CONSTRUCTOR(n : TEXT, b : Backlog)
+
     SET sprintName TO n
     SET backlog TO b
+    SET tasks TO EMPTY LIST
+
 END CONSTRUCTOR
 
+
+
 METHODS
+
     addTask(newTask : Task)
+
         IF newTask.developer.canAcceptTask()
+
             ADD newTask TO tasks
             CALL newTask.developer.assignTask()
+
         ELSE
+
             DISPLAY "Developer capacity exceeded"
+
         END IF
+
     END METHOD
 
+
+
     calculateProgress()
+
         completed = COUNT OF tasks WHERE status = "Completed"
         total = LENGTH(tasks)
 
         IF total = 0
+
             DISPLAY 0
 
+        ELSE
+
             DISPLAY (completed * 100) / total
+
         END IF
+
     END METHOD
+
+
 END CLASS
+
+
+
 
 
 CLASS Developer
+
 Attributes
-    developerId : Number
-    developerName : TEXT
-    capacity : Number
-    assignedTasks : Number
+    PRIVATE developerId : Number
+    PRIVATE developerName : TEXT
+    PRIVATE capacity : Number
+    PRIVATE assignedTasks : Number
+
 
 CONSTRUCTOR(n : TEXT, c : Number)
+
     SET developerName TO n
     SET capacity TO c
     SET assignedTasks TO 0
+
 END CONSTRUCTOR
 
+
+
 METHODS
+
     canAcceptTask()
+
         RETURN assignedTasks < capacity
+
     END METHOD
 
+
+
     assignTask()
+
         SET assignedTasks TO assignedTasks + 1
+
     END METHOD
+
+
 END CLASS
+
+
+
 
 
 CLASS Task
+
 Attributes
-    taskId : Number
-    taskName : TEXT
-    status : TEXT
-    developer : Developer
+    PRIVATE taskId : Number
+    PRIVATE taskName : TEXT
+    PRIVATE status : TEXT
+    PRIVATE developer : Developer
+
 
 CONSTRUCTOR(n : TEXT, s : TEXT, d : Developer)
+
     SET taskName TO n
     SET status TO s
     SET developer TO d
+
 END CONSTRUCTOR
+
+
 
 METHODS
+
+
     updateStatus(newStatus : TEXT)
+
         IF status = "Backlog" AND newStatus = "In Progress"
+
             SET status TO newStatus
+
         ELSE IF status = "In Progress" AND newStatus = "Testing"
+
             SET status TO newStatus
+
         ELSE IF status = "Testing" AND newStatus = "Completed"
+
             SET status TO newStatus
+
         ELSE
+
             DISPLAY "Invalid Status Transition"
+
         END IF
+
     END METHOD
+
+
 
     markComplete()
+
         IF status = "Testing"
+
             SET status TO "Completed"
+
         ELSE
+
             DISPLAY "Task cannot be completed yet"
+
         END IF
+
     END METHOD
+
+
 END CLASS
 
+
+
+
+
 CLASS Backlog
+
 Attributes
-    backlogId : Number
-    backlogName : TEXT
-    tasks : LIST<Task>
+    PRIVATE backlogId : Number
+    PRIVATE backlogName : TEXT
+    PRIVATE tasks : LIST<Task>
+
 
 CONSTRUCTOR(n : TEXT)
+
     SET backlogName TO n
+    SET tasks TO EMPTY LIST
+
 END CONSTRUCTOR
-END CLASS 
+
+
+END CLASS
+----------------------
+TASK287
+CLASS Farm
+
+Attributes
+    PRIVATE farmId : Number
+    PRIVATE farmName : TEXT
+    PRIVATE fields : LIST<Field>
+    PRIVATE workers : LIST<Worker>
+
+
+CONSTRUCTOR(n : TEXT)
+
+    SET farmName TO n
+    SET fields TO EMPTY LIST
+    SET workers TO EMPTY LIST
+
+END CONSTRUCTOR
+
+
+METHODS
+
+    addField(newField : Field)
+
+        ADD newField TO fields
+
+    END METHOD
+
+
+    addWorker(newWorker : Worker)
+
+        ADD newWorker TO workers
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+
+CLASS Field
+
+Attributes
+    PRIVATE fieldId : Number
+    PRIVATE fieldName : TEXT
+    PRIVATE crop : Crop
+    PRIVATE activities : LIST<Activity>
+
+
+CONSTRUCTOR(n : TEXT, c : Crop)
+
+    SET fieldName TO n
+    SET crop TO c
+    SET activities TO EMPTY LIST
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+
+    addActivity(newActivity : Activity)
+
+        IF newActivity.type = "Watering"
+
+            IF newActivity.amount < crop.waterNeed
+
+                DISPLAY "Insufficient Water"
+
+            ELSE
+
+                ADD newActivity TO activities
+
+            END IF
+
+        ELSE
+
+            ADD newActivity TO activities
+
+        END IF
+
+
+    END METHOD
+
+
+
+    calculateEstimatedYield()
+
+        totalActivities = LENGTH(activities)
+
+        IF totalActivities = 0
+
+            RETURN 0
+
+        ELSE
+
+            properCare = COUNT OF activities WHERE status = "Completed"
+
+            carePercentage = properCare / totalActivities
+
+            estimatedYield = crop.expectedOutput * carePercentage
+
+            RETURN estimatedYield
+
+        END IF
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+
+CLASS Crop
+
+Attributes
+    PRIVATE cropId : Number
+    PRIVATE cropName : TEXT
+    PRIVATE waterNeed : REAL
+    PRIVATE expectedOutput : REAL
+
+
+CONSTRUCTOR(n : TEXT, w : REAL, e : REAL)
+
+    SET cropName TO n
+    SET waterNeed TO w
+    SET expectedOutput TO e
+
+END CONSTRUCTOR
+
+
+METHODS
+
+
+    getWaterNeed()
+
+        RETURN waterNeed
+
+    END METHOD
+
+
+
+    getExpectedOutput()
+
+        RETURN expectedOutput
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+
+CLASS Activity
+
+Attributes
+    PRIVATE activityId : Number
+    PRIVATE activityType : TEXT
+    PRIVATE activityDate : DATE
+    PRIVATE amount : REAL
+    PRIVATE status : TEXT
+    PRIVATE worker : Worker
+
+
+CONSTRUCTOR(t : TEXT, d : DATE, a : REAL, w : Worker)
+
+    SET activityType TO t
+    SET activityDate TO d
+    SET amount TO a
+    SET worker TO w
+    SET status TO "Completed"
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+
+    getActivityType()
+
+        RETURN activityType
+
+    END METHOD
+
+
+
+    getStatus()
+
+        RETURN status
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+
+CLASS Worker
+
+Attributes
+    PRIVATE workerId : Number
+    PRIVATE workerName : TEXT
+    PRIVATE dailyLimit : Number
+    PRIVATE assignedActivities : LIST<Activity>
+
+
+CONSTRUCTOR(n : TEXT, limit : Number)
+
+    SET workerName TO n
+    SET dailyLimit TO limit
+    SET assignedActivities TO EMPTY LIST
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+
+    canAcceptActivity()
+
+        RETURN LENGTH(assignedActivities) < dailyLimit
+
+    END METHOD
+
+
+
+    assignActivity(newActivity : Activity)
+
+        IF canAcceptActivity()
+
+            ADD newActivity TO assignedActivities
+
+        ELSE
+
+            DISPLAY "Worker daily limit exceeded"
+
+        END IF
+
+    END METHOD
+
+
+END CLASS
+
 
 
 
