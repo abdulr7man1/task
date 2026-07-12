@@ -1,0 +1,1277 @@
+
+TASK293
+CLASS Shape
+
+Attributes
+    PRIVATE color : TEXT
+    PRIVATE positionX : REAL
+    PRIVATE positionY : REAL
+
+CONSTRUCTOR(c : TEXT, x : REAL, y : REAL)
+    SET color TO c
+    SET positionX TO x
+    SET positionY TO y
+END CONSTRUCTOR
+
+METHODS
+
+    getArea()
+        RETURN 0
+    END METHOD
+
+    getPerimeter()
+        RETURN 0
+    END METHOD
+
+END CLASS
+
+
+CLASS Circle EXTENDS Shape
+
+Attributes
+    PRIVATE radius : REAL
+
+CONSTRUCTOR(c : TEXT, x : REAL, y : REAL, r : REAL)
+    CALL SUPER(c, x, y)
+    SET radius TO r
+END CONSTRUCTOR
+
+METHODS
+
+    getArea()
+        RETURN 3.14159 * radius * radius
+    END METHOD
+
+    getPerimeter()
+        RETURN 2 * 3.14159 * radius
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Rectangle EXTENDS Shape
+
+Attributes
+    PRIVATE width : REAL
+    PRIVATE height : REAL
+
+CONSTRUCTOR(c : TEXT, x : REAL, y : REAL, w : REAL, h : REAL)
+    CALL SUPER(c, x, y)
+    SET width TO w
+    SET height TO h
+END CONSTRUCTOR
+
+METHODS
+
+    getArea()
+        RETURN width * height
+    END METHOD
+
+    getPerimeter()
+        RETURN 2 * (width + height)
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Triangle EXTENDS Shape
+
+Attributes
+    PRIVATE side1 : REAL
+    PRIVATE side2 : REAL
+    PRIVATE side3 : REAL
+
+CONSTRUCTOR(c : TEXT, x : REAL, y : REAL, s1 : REAL, s2 : REAL, s3 : REAL)
+    CALL SUPER(c, x, y)
+    SET side1 TO s1
+    SET side2 TO s2
+    SET side3 TO s3
+END CONSTRUCTOR
+
+METHODS
+
+    getArea()
+        SET semiPerimeter TO (side1 + side2 + side3) / 2
+        RETURN SQRT(semiPerimeter * (semiPerimeter - side1) * (semiPerimeter - side2) * (semiPerimeter - side3))
+    END METHOD
+
+    getPerimeter()
+        RETURN side1 + side2 + side3
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Canvas
+
+Attributes
+    PRIVATE shapes : LIST<Shape>
+
+CONSTRUCTOR()
+    SET shapes TO EMPTY LIST
+END CONSTRUCTOR
+
+METHODS
+
+    addShape(newShape : Shape)
+        ADD newShape TO shapes
+    END METHOD
+
+    removeShape(shape : Shape)
+        REMOVE shape FROM shapes
+    END METHOD
+
+    displayShapes()
+        FOR EACH shape IN shapes
+            DISPLAY shape
+        END FOR
+    END METHOD
+
+END CLASS
+------------------------
+TASK294
+CLASS Employee
+
+Attributes
+    PRIVATE employeeId : Number
+    PRIVATE employeeName : TEXT
+    PRIVATE hireDate : DATE
+
+
+CONSTRUCTOR(n : TEXT, d : DATE)
+    SET employeeName TO n
+    SET hireDate TO d
+END CONSTRUCTOR
+METHODS
+    calculatePay()
+    RETURN 0
+    END METHOD
+
+END CLASS
+ CLASS Salaried Employee EXTENDS Employee
+
+Attributes
+    PRIVATE monthlySalary : REAL
+
+CONSTRUCTOR(n : TEXT, d : DATE, s : REAL)
+    CALL SUPER(n, d)
+    SET monthlySalary TO s
+END CONSTRUCTOR
+
+METHODS
+
+    calculatePay()
+        RETURN monthlySalary
+    END METHOD
+
+END CLASS
+CLASS HourlyEmployee EXTENDS Employee
+
+Attributes
+    PRIVATE hourlyRate : REAL
+    PRIVATE hoursWorked : REAL
+
+CONSTRUCTOR(n : TEXT, d : DATE, r : REAL, h : REAL)
+    CALL SUPER(n, d)
+    SET hourlyRate TO r
+    SET hoursWorked TO h
+END CONSTRUCTOR
+
+METHODS
+
+    calculatePay()
+        RETURN hourlyRate * hoursWorked
+    END METHOD
+
+END CLASS
+
+
+
+CLASS CommissionEmployee EXTENDS Employee
+
+Attributes
+    PRIVATE baseSalary : REAL
+    PRIVATE salesAmount : REAL
+    PRIVATE commissionRate : REAL
+
+CONSTRUCTOR(n : TEXT, d : DATE, b : REAL, s : REAL, r : REAL)
+    CALL SUPER(n, d)
+    SET baseSalary TO b
+    SET salesAmount TO s
+    SET commissionRate TO r
+END CONSTRUCTOR
+
+METHODS
+
+    calculatePay()
+        RETURN baseSalary + (salesAmount * commissionRate)
+    END METHOD
+
+END CLASS
+
+
+CLASS Payroll
+
+Attributes
+    PRIVATE employees : LIST<Employee>
+
+CONSTRUCTOR()
+    SET employees TO EMPTY LIST
+END CONSTRUCTOR
+
+METHODS
+
+    addEmployee(newEmployee : Employee)
+        ADD newEmployee TO employees
+    END METHOD
+
+    calculateTotalPayroll()
+        SET total TO 0
+
+        FOR EACH employee IN employees
+            SET total TO total + employee.calculatePay()
+        END FOR
+
+        RETURN total
+    END METHOD
+
+END CLAS
+---------------------------
+TASK295
+CLASS Animal
+
+Attributes
+    PRIVATE name : TEXT
+    PRIVATE age : NUMBER
+    PRIVATE dietType : TEXT
+
+CONSTRUCTOR(n : TEXT, a : NUMBER, d : TEXT)
+    SET name TO n
+    SET age TO a
+    SET dietType TO d
+END CONSTRUCTOR
+
+METHODS
+
+    makeSound()
+        RETURN "Animal Sound"
+    END METHOD
+
+    move()
+        RETURN "Animal Movement"
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Bird EXTENDS Animal
+
+Attributes
+    PRIVATE canFly : BOOLEAN
+
+CONSTRUCTOR(n : TEXT, a : NUMBER, d : TEXT, f : BOOLEAN)
+    CALL SUPER(n, a, d)
+    SET canFly TO f
+END CONSTRUCTOR
+
+METHODS
+
+    makeSound()
+        RETURN "Chirp"
+    END METHOD
+
+    move()
+        RETURN "Flies"
+    END METHOD
+
+    layEggs()
+        RETURN "Bird lays eggs"
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Fish EXTENDS Animal
+
+Attributes
+    PRIVATE hasGills : BOOLEAN
+
+CONSTRUCTOR(n : TEXT, a : NUMBER, d : TEXT, g : BOOLEAN)
+    CALL SUPER(n, a, d)
+    SET hasGills TO g
+END CONSTRUCTOR
+
+METHODS
+
+    makeSound()
+        RETURN "Blub"
+    END METHOD
+
+    move()
+        RETURN "Swims"
+    END METHOD
+
+    breathe()
+        RETURN "Breathes through gills"
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Mammal EXTENDS Animal
+
+Attributes
+    PRIVATE hasFur : BOOLEAN
+
+CONSTRUCTOR(n : TEXT, a : NUMBER, d : TEXT, f : BOOLEAN)
+    CALL SUPER(n, a, d)
+    SET hasFur TO f
+END CONSTRUCTOR
+
+METHODS
+
+    makeSound()
+        RETURN "Roar"
+    END METHOD
+
+    move()
+        RETURN "Walks"
+    END METHOD
+
+    giveBirth()
+        RETURN "Gives birth to live young"
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Enclosure
+
+Attributes
+    PRIVATE temperature : REAL
+    PRIVATE animals : LIST<Animal>
+
+CONSTRUCTOR(t : REAL)
+    SET temperature TO t
+    SET animals TO EMPTY LIST
+END CONSTRUCTOR
+
+METHODS
+
+    addAnimal(newAnimal : Animal)
+        ADD newAnimal TO animals
+    END METHOD
+
+    displayAnimals()
+
+        FOR EACH animal IN animals
+            DISPLAY animal.makeSound()
+            DISPLAY animal.move()
+        END FOR
+
+    END METHOD
+
+END CLASS
+---------------------------------------------
+TASK296
+CLASS PaymentMethod
+
+Attributes
+    PRIVATE amount : REAL
+    PRIVATE status : TEXT
+
+CONSTRUCTOR(a : REAL)
+    SET amount TO a
+    SET status TO "Pending"
+END CONSTRUCTOR
+
+METHODS
+
+    processPayment()
+        RETURN "Payment Processed"
+    END METHOD
+
+END CLASS
+
+
+
+CLASS CreditCardPayment EXTENDS PaymentMethod
+
+Attributes
+    PRIVATE cardNumber : TEXT
+    PRIVATE expiryDate : DATE
+
+CONSTRUCTOR(a : REAL, c : TEXT, e : DATE)
+    CALL SUPER(a)
+    SET cardNumber TO c
+    SET expiryDate TO e
+END CONSTRUCTOR
+
+METHODS
+
+    processPayment()
+        DISPLAY "Validating card number and expiry date"
+        SET status TO "Completed"
+        RETURN "Credit Card Payment Successful"
+    END METHOD
+
+END CLASS
+
+
+
+CLASS BankTransferPayment EXTENDS PaymentMethod
+
+Attributes
+    PRIVATE accountNumber : TEXT
+
+CONSTRUCTOR(a : REAL, acc : TEXT)
+    CALL SUPER(a)
+    SET accountNumber TO acc
+END CONSTRUCTOR
+
+METHODS
+
+    processPayment()
+        DISPLAY "Validating account number"
+        DISPLAY "Processing bank transfer"
+        SET status TO "Completed"
+        RETURN "Bank Transfer Payment Successful"
+    END METHOD
+
+END CLASS
+
+
+
+CLASS WalletPayment EXTENDS PaymentMethod
+
+Attributes
+    PRIVATE walletBalance : REAL
+
+CONSTRUCTOR(a : REAL, b : REAL)
+    CALL SUPER(a)
+    SET walletBalance TO b
+END CONSTRUCTOR
+
+METHODS
+
+    processPayment()
+        IF walletBalance >= amount THEN
+            SET walletBalance TO walletBalance - amount
+            SET status TO "Completed"
+            RETURN "Wallet Payment Successful"
+        ELSE
+            RETURN "Insufficient Wallet Balance"
+        END IF
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Order
+
+Attributes
+    PRIVATE items : LIST<TEXT>
+    PRIVATE payment : PaymentMethod
+
+CONSTRUCTOR()
+    SET items TO EMPTY LIST
+    SET payment TO NULL
+END CONSTRUCTOR
+
+METHODS
+
+    addItem(item : TEXT)
+        ADD item TO items
+    END METHOD
+
+    checkout(newPayment : PaymentMethod)
+        SET payment TO newPayment
+        DISPLAY payment.processPayment()
+    END METHOD
+
+END CLASS
+------------------------------------------------------
+TASK297
+CLASS Subscription
+
+Attributes
+    PRIVATE startDate : DATE
+    PRIVATE monthlyPrice : REAL
+
+CONSTRUCTOR(d : DATE, p : REAL)
+    SET startDate TO d
+    SET monthlyPrice TO p
+END CONSTRUCTOR
+
+METHODS
+
+    isActive()
+        RETURN TRUE
+    END METHOD
+
+    getStreamingQuality()
+        RETURN "Standard Definition"
+    END METHOD
+
+    getDeviceLimit()
+        RETURN 1
+    END METHOD
+
+END CLASS
+
+
+
+CLASS BasicPlan EXTENDS Subscription
+
+CONSTRUCTOR(d : DATE, p : REAL)
+    CALL SUPER(d, p)
+END CONSTRUCTOR
+
+METHODS
+
+    getStreamingQuality()
+        RETURN "Standard Definition (SD)"
+    END METHOD
+
+    getDeviceLimit()
+        RETURN 1
+    END METHOD
+
+END CLASS
+
+
+
+CLASS StandardPlan EXTENDS Subscription
+
+CONSTRUCTOR(d : DATE, p : REAL)
+    CALL SUPER(d, p)
+END CONSTRUCTOR
+
+METHODS
+
+    getStreamingQuality()
+        RETURN "High Definition (HD)"
+    END METHOD
+
+    getDeviceLimit()
+        RETURN 2
+    END METHOD
+
+END CLASS
+
+
+
+CLASS PremiumPlan EXTENDS Subscription
+
+Attributes
+    PRIVATE offlineDownloads : BOOLEAN
+
+CONSTRUCTOR(d : DATE, p : REAL)
+    CALL SUPER(d, p)
+    SET offlineDownloads TO TRUE
+END CONSTRUCTOR
+
+METHODS
+
+    getStreamingQuality()
+        RETURN "Ultra High Definition (UHD)"
+    END METHOD
+
+    getDeviceLimit()
+        RETURN 4
+    END METHOD
+
+    downloadContent()
+        RETURN "Offline Download Available"
+    END METHOD
+
+END CLASS
+
+
+
+CLASS WatchRecord
+
+Attributes
+    PRIVATE title : TEXT
+    PRIVATE watchedDate : DATE
+
+CONSTRUCTOR(t : TEXT, d : DATE)
+    SET title TO t
+    SET watchedDate TO d
+END CONSTRUCTOR
+
+END CLASS
+
+
+
+CLASS UserAccount
+
+Attributes
+    PRIVATE subscription : Subscription
+    PRIVATE watchHistory : LIST<WatchRecord>
+
+CONSTRUCTOR(s : Subscription)
+    SET subscription TO s
+    SET watchHistory TO EMPTY LIST
+END CONSTRUCTOR
+
+METHODS
+
+    addWatchRecord(record : WatchRecord)
+        ADD record TO watchHistory
+    END METHOD
+
+    viewSubscription()
+        DISPLAY subscription.getStreamingQuality()
+        DISPLAY subscription.getDeviceLimit()
+    END METHOD
+
+END CLASS
+-----------------------------------------------------------------
+TASK298
+CLASS Vehicle
+
+Attributes
+    PRIVATE licencePlate : TEXT
+    PRIVATE fuelLevel : REAL
+    PRIVATE engine : Engine
+
+CONSTRUCTOR(l : TEXT, f : REAL, e : Engine)
+    SET licencePlate TO l
+    SET fuelLevel TO f
+    SET engine TO e
+END CONSTRUCTOR
+
+METHODS
+
+    calculateDeliveryTime(distance : REAL)
+        RETURN 0
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Van EXTENDS Vehicle
+
+Attributes
+    PRIVATE cargoCapacity : REAL
+
+CONSTRUCTOR(l : TEXT, f : REAL, e : Engine, c : REAL)
+    CALL SUPER(l, f, e)
+    SET cargoCapacity TO c
+END CONSTRUCTOR
+
+METHODS
+
+    calculateDeliveryTime(distance : REAL)
+        RETURN distance / 40
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Motorbike EXTENDS Vehicle
+
+Attributes
+    PRIVATE smallPackagesOnly : BOOLEAN
+
+CONSTRUCTOR(l : TEXT, f : REAL, e : Engine)
+    CALL SUPER(l, f, e)
+    SET smallPackagesOnly TO TRUE
+END CONSTRUCTOR
+
+METHODS
+
+    calculateDeliveryTime(distance : REAL)
+        RETURN distance / 60
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Truck EXTENDS Vehicle
+
+Attributes
+    PRIVATE heavyLoadCapacity : REAL
+
+CONSTRUCTOR(l : TEXT, f : REAL, e : Engine, h : REAL)
+    CALL SUPER(l, f, e)
+    SET heavyLoadCapacity TO h
+END CONSTRUCTOR
+
+METHODS
+
+    calculateDeliveryTime(distance : REAL)
+        RETURN distance / 30
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Engine
+
+Attributes
+    PRIVATE horsepower : NUMBER
+    PRIVATE fuelEfficiency : REAL
+
+CONSTRUCTOR(h : NUMBER, f : REAL)
+    SET horsepower TO h
+    SET fuelEfficiency TO f
+END CONSTRUCTOR
+
+END CLASS
+
+
+
+CLASS Stop
+
+Attributes
+    PRIVATE address : TEXT
+    PRIVATE package : TEXT
+
+CONSTRUCTOR(a : TEXT, p : TEXT)
+    SET address TO a
+    SET package TO p
+END CONSTRUCTOR
+
+END CLASS
+
+
+
+CLASS Route
+
+Attributes
+    PRIVATE stops : LIST<Stop>
+
+CONSTRUCTOR()
+    SET stops TO EMPTY LIST
+END CONSTRUCTOR
+
+METHODS
+
+    addStop(newStop : Stop)
+        ADD newStop TO stops
+    END METHOD
+
+END CLASS
+
+--------------------------------------------
+TASK299
+CLASS Card
+
+Attributes
+    PRIVATE cardNumber : TEXT
+    PRIVATE expiryDate : DATE
+    PRIVATE status : TEXT
+    PRIVATE chip : Chip
+
+CONSTRUCTOR(c : TEXT, e : DATE, s : TEXT, ch : Chip)
+    SET cardNumber TO c
+    SET expiryDate TO e
+    SET status TO s
+    SET chip TO ch
+END CONSTRUCTOR
+
+METHODS
+
+    authorisePurchase(amount : REAL)
+        RETURN FALSE
+    END METHOD
+
+END CLASS
+
+
+
+CLASS DebitCard EXTENDS Card
+
+Attributes
+    PRIVATE accountBalance : REAL
+
+CONSTRUCTOR(c : TEXT, e : DATE, s : TEXT, ch : Chip, b : REAL)
+    CALL SUPER(c, e, s, ch)
+    SET accountBalance TO b
+END CONSTRUCTOR
+
+METHODS
+
+    authorisePurchase(amount : REAL)
+        IF accountBalance >= amount THEN
+            SET accountBalance TO accountBalance - amount
+            RETURN TRUE
+        ELSE
+            RETURN FALSE
+        END IF
+    END METHOD
+
+END CLASS
+
+
+
+CLASS CreditCard EXTENDS Card
+
+Attributes
+    PRIVATE creditLimit : REAL
+    PRIVATE unpaidPurchases : LIST<REAL>
+
+CONSTRUCTOR(c : TEXT, e : DATE, s : TEXT, ch : Chip, l : REAL)
+    CALL SUPER(c, e, s, ch)
+    SET creditLimit TO l
+    SET unpaidPurchases TO EMPTY LIST
+END CONSTRUCTOR
+
+METHODS
+
+    calculateOutstandingBalance()
+        SET total TO 0
+
+        FOR EACH purchase IN unpaidPurchases
+            SET total TO total + purchase
+        END FOR
+
+        RETURN total
+    END METHOD
+
+    authorisePurchase(amount : REAL)
+
+        IF calculateOutstandingBalance() + amount <= creditLimit THEN
+            ADD amount TO unpaidPurchases
+            RETURN TRUE
+        ELSE
+            RETURN FALSE
+        END IF
+
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Chip
+
+Attributes
+    PRIVATE encryptedSecurityData : TEXT
+
+CONSTRUCTOR(data : TEXT)
+    SET encryptedSecurityData TO data
+END CONSTRUCTOR
+
+END CLASS
+----------------------------------
+TASK300
+CLASS StaffMember
+
+Attributes
+    PRIVATE name : TEXT
+    PRIVATE employeeID : NUMBER
+
+CONSTRUCTOR(n : TEXT, id : NUMBER)
+    SET name TO n
+    SET employeeID TO id
+END CONSTRUCTOR
+
+METHODS
+
+    assignShift()
+        RETURN "Shift Assigned"
+    END METHOD
+
+    calculatePay()
+        RETURN 0
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Doctor EXTENDS StaffMember
+
+CONSTRUCTOR(n : TEXT, id : NUMBER)
+    CALL SUPER(n, id)
+END CONSTRUCTOR
+
+METHODS
+
+    approveTreatment()
+        RETURN "Treatment Approved"
+    END METHOD
+
+    diagnosePatient()
+        RETURN "Diagnosis Completed"
+    END METHOD
+
+    calculatePay()
+        RETURN 500
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Surgeon EXTENDS Doctor
+
+CONSTRUCTOR(n : TEXT, id : NUMBER)
+    CALL SUPER(n, id)
+END CONSTRUCTOR
+
+METHODS
+
+    performOperation()
+        RETURN "Operation Performed"
+    END METHOD
+
+    calculatePay()
+        RETURN 800
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Nurse EXTENDS StaffMember
+
+CONSTRUCTOR(n : TEXT, id : NUMBER)
+    CALL SUPER(n, id)
+END CONSTRUCTOR
+
+METHODS
+
+    administerMedication()
+        RETURN "Medication Administered"
+    END METHOD
+
+    recordVitalSigns()
+        RETURN "Vital Signs Recorded"
+    END METHOD
+
+    calculatePay()
+        RETURN 300
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Shift
+
+Attributes
+    PRIVATE startTime : TIME
+    PRIVATE endTime : TIME
+    PRIVATE ward : TEXT
+
+CONSTRUCTOR(s : TIME, e : TIME, w : TEXT)
+    SET startTime TO s
+    SET endTime TO e
+    SET ward TO w
+END CONSTRUCTOR
+
+END CLASS
+
+
+
+CLASS Ward
+
+Attributes
+    PRIVATE shifts : LIST<Shift>
+
+CONSTRUCTOR()
+    SET shifts TO EMPTY LIST
+END CONSTRUCTOR
+
+METHODS
+
+    addShift(newShift : Shift)
+        ADD newShift TO shifts
+    END METHOD
+
+END CLASS
+------------------------------------------
+TASK301
+CLASS Publication
+
+Attributes
+    PRIVATE title : TEXT
+    PRIVATE author : TEXT
+    PRIVATE totalPages : NUMBER
+    PRIVATE coverImage : CoverImage
+
+CONSTRUCTOR(t : TEXT, a : TEXT, p : NUMBER, c : CoverImage)
+    SET title TO t
+    SET author TO a
+    SET totalPages TO p
+    SET coverImage TO c
+END CONSTRUCTOR
+
+METHODS
+
+    getProgress()
+        RETURN 0
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Novel EXTENDS Publication
+
+Attributes
+    PRIVATE currentPage : NUMBER
+
+CONSTRUCTOR(t : TEXT, a : TEXT, p : NUMBER, c : CoverImage)
+    CALL SUPER(t, a, p, c)
+    SET currentPage TO 0
+END CONSTRUCTOR
+
+METHODS
+
+    getProgress()
+        RETURN (currentPage / totalPages) * 100
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Magazine EXTENDS Publication
+
+Attributes
+    PRIVATE totalArticles : NUMBER
+    PRIVATE openedArticles : NUMBER
+
+CONSTRUCTOR(t : TEXT, a : TEXT, p : NUMBER, c : CoverImage, ta : NUMBER)
+    CALL SUPER(t, a, p, c)
+    SET totalArticles TO ta
+    SET openedArticles TO 0
+END CONSTRUCTOR
+
+METHODS
+
+    getProgress()
+        RETURN (openedArticles / totalArticles) * 100
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Audiobook EXTENDS Publication
+
+Attributes
+    PRIVATE totalListeningTime : REAL
+    PRIVATE listenedTime : REAL
+
+CONSTRUCTOR(t : TEXT, a : TEXT, p : NUMBER, c : CoverImage, tt : REAL)
+    CALL SUPER(t, a, p, c)
+    SET totalListeningTime TO tt
+    SET listenedTime TO 0
+END CONSTRUCTOR
+
+METHODS
+
+    getProgress()
+        RETURN (listenedTime / totalListeningTime) * 100
+    END METHOD
+
+END CLASS
+
+
+
+CLASS CoverImage
+
+Attributes
+    PRIVATE filePath : TEXT
+    PRIVATE dimensions : TEXT
+
+CONSTRUCTOR(f : TEXT, d : TEXT)
+    SET filePath TO f
+    SET dimensions TO d
+END CONSTRUCTOR
+
+END CLASS
+
+
+
+CLASS Library
+
+Attributes
+    PRIVATE publications : LIST<Publication>
+
+CONSTRUCTOR()
+    SET publications TO EMPTY LIST
+END CONSTRUCTOR
+
+METHODS
+
+    addPublication(newPublication : Publication)
+        ADD newPublication TO publications
+    END METHOD
+
+END CLASS
+-------------------------------------------------
+TASK302
+CLASS Device
+
+Attributes
+    PRIVATE name : TEXT
+    PRIVATE roomLocation : TEXT
+    PRIVATE status : TEXT
+
+CONSTRUCTOR(n : TEXT, r : TEXT, s : TEXT)
+    SET name TO n
+    SET roomLocation TO r
+    SET status TO s
+END CONSTRUCTOR
+
+METHODS
+
+    getPowerUsage()
+        RETURN 0
+    END METHOD
+
+END CLASS
+
+
+
+CLASS SmartLight EXTENDS Device
+
+Attributes
+    PRIVATE brightnessLevel : NUMBER
+
+CONSTRUCTOR(n : TEXT, r : TEXT, s : TEXT, b : NUMBER)
+    CALL SUPER(n, r, s)
+    SET brightnessLevel TO b
+END CONSTRUCTOR
+
+METHODS
+
+    getPowerUsage()
+        RETURN brightnessLevel * 0.2
+    END METHOD
+
+END CLASS
+
+
+
+CLASS SmartThermostat EXTENDS Device
+
+Attributes
+    PRIVATE targetTemperature : REAL
+    PRIVATE heatingLevel : REAL
+
+CONSTRUCTOR(n : TEXT, r : TEXT, s : TEXT, t : REAL, h : REAL)
+    CALL SUPER(n, r, s)
+    SET targetTemperature TO t
+    SET heatingLevel TO h
+END CONSTRUCTOR
+
+METHODS
+
+    getPowerUsage()
+        RETURN heatingLevel * 1.5
+    END METHOD
+
+END CLASS
+
+
+
+CLASS SmartCamera EXTENDS Device
+
+Attributes
+    PRIVATE recording : BOOLEAN
+    PRIVATE storage : StorageUnit
+
+CONSTRUCTOR(n : TEXT, r : TEXT, s : TEXT, rec : BOOLEAN, st : StorageUnit)
+    CALL SUPER(n, r, s)
+    SET recording TO rec
+    SET storage TO st
+END CONSTRUCTOR
+
+METHODS
+
+    getPowerUsage()
+
+        IF recording = TRUE THEN
+            RETURN 10
+        ELSE
+            RETURN 2
+        END IF
+
+    END METHOD
+
+END CLASS
+
+
+
+CLASS StorageUnit
+
+Attributes
+    PRIVATE capacity : REAL
+    PRIVATE usedSpace : REAL
+
+CONSTRUCTOR(c : REAL)
+    SET capacity TO c
+    SET usedSpace TO 0
+END CONSTRUCTOR
+
+METHODS
+
+    recordFootage(size : REAL)
+
+        IF usedSpace + size <= capacity THEN
+            SET usedSpace TO usedSpace + size
+            RETURN TRUE
+        ELSE
+            RETURN FALSE
+        END IF
+
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Room
+
+Attributes
+    PRIVATE devices : LIST<Device>
+
+CONSTRUCTOR()
+    SET devices TO EMPTY LIST
+END CONSTRUCTOR
+
+METHODS
+
+    addDevice(newDevice : Device)
+        ADD newDevice TO devices
+
+    END METHOD
+
+END CLASS
+
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
