@@ -1,0 +1,605 @@
+
+TASK303
+CLASS Instrument
+
+Attributes
+    PRIVATE brand : TEXT
+    PRIVATE price : REAL
+
+CONSTRUCTOR(b : TEXT, p : REAL)
+    SET brand TO b
+    SET price TO p
+END CONSTRUCTOR
+
+METHODS
+
+    describePlayStyle()
+        RETURN "Instrument Playing Style"
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Guitar EXTENDS Instrument
+
+Attributes
+    PRIVATE numberOfStrings : NUMBER
+
+CONSTRUCTOR(b : TEXT, p : REAL, s : NUMBER)
+    CALL SUPER(b, p)
+    SET numberOfStrings TO s
+END CONSTRUCTOR
+
+METHODS
+
+    describePlayStyle()
+        RETURN "Strummed or plucked"
+    END METHOD
+
+END CLASS
+
+
+
+CLASS DrumKit EXTENDS Instrument
+
+Attributes
+    PRIVATE numberOfPieces : NUMBER
+
+CONSTRUCTOR(b : TEXT, p : REAL, d : NUMBER)
+    CALL SUPER(b, p)
+    SET numberOfPieces TO d
+END CONSTRUCTOR
+
+METHODS
+
+    describePlayStyle()
+        RETURN "Struck"
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Keyboard EXTENDS Instrument
+
+Attributes
+    PRIVATE numberOfKeys : NUMBER
+
+CONSTRUCTOR(b : TEXT, p : REAL, k : NUMBER)
+    CALL SUPER(b, p)
+    SET numberOfKeys TO k
+END CONSTRUCTOR
+
+METHODS
+
+    describePlayStyle()
+        RETURN "Pressed"
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Store
+
+Attributes
+    PRIVATE instruments : LIST<Instrument>
+
+CONSTRUCTOR()
+    SET instruments TO EMPTY LIST
+END CONSTRUCTOR
+
+METHODS
+
+    addInstrument(newInstrument : Instrument)
+        ADD newInstrument TO instruments
+    END METHOD
+
+    displayInstruments()
+
+        FOR EACH instrument IN instruments
+            DISPLAY instrument.describePlayStyle()
+        END FOR
+
+    END METHOD
+
+END CLASS
+-------------------------------------------------------
+TASK304
+CLASS Workout
+
+Attributes
+    PRIVATE date : DATE
+    PRIVATE duration : REAL
+
+CONSTRUCTOR(d : DATE, t : REAL)
+    SET date TO d
+    SET duration TO t
+END CONSTRUCTOR
+
+METHODS
+
+    calculateCalories()
+        RETURN 0
+    END METHOD
+
+END CLASS
+
+
+
+CLASS RunningWorkout EXTENDS Workout
+
+Attributes
+    PRIVATE distance : REAL
+    PRIVATE pace : REAL
+
+CONSTRUCTOR(d : DATE, t : REAL, dis : REAL, p : REAL)
+    CALL SUPER(d, t)
+    SET distance TO dis
+    SET pace TO p
+END CONSTRUCTOR
+
+METHODS
+
+    calculateCalories()
+        RETURN distance * pace * 10
+    END METHOD
+
+END CLASS
+
+
+
+CLASS CyclingWorkout EXTENDS Workout
+
+Attributes
+    PRIVATE distance : REAL
+    PRIVATE resistanceLevel : REAL
+
+CONSTRUCTOR(d : DATE, t : REAL, dis : REAL, r : REAL)
+    CALL SUPER(d, t)
+    SET distance TO dis
+    SET resistanceLevel TO r
+END CONSTRUCTOR
+
+METHODS
+
+    calculateCalories()
+        RETURN distance * resistanceLevel * 8
+    END METHOD
+
+END CLASS
+
+
+
+CLASS WeightTrainingWorkout EXTENDS Workout
+
+Attributes
+    PRIVATE numberOfSets : NUMBER
+    PRIVATE numberOfReps : NUMBER
+
+CONSTRUCTOR(d : DATE, t : REAL, s : NUMBER, r : NUMBER)
+    CALL SUPER(d, t)
+    SET numberOfSets TO s
+    SET numberOfReps TO r
+END CONSTRUCTOR
+
+METHODS
+
+    calculateCalories()
+        RETURN numberOfSets * numberOfReps * 2
+    END METHOD
+
+END CLASS
+
+
+
+CLASS FitnessLog
+
+Attributes
+    PRIVATE workouts : LIST<Workout>
+
+CONSTRUCTOR()
+    SET workouts TO EMPTY LIST
+END CONSTRUCTOR
+
+METHODS
+
+    addWorkout(newWorkout : Workout)
+        ADD newWorkout TO workouts
+    END METHOD
+
+    calculateTotalCalories()
+
+        SET total TO 0
+
+        FOR EACH workout IN workouts
+            SET total TO total + workout.calculateCalories()
+        END FOR
+
+        RETURN total
+
+    END METHOD
+
+END CLASS
+--------------------------------
+TASK305
+CLASS Character
+
+Attributes
+    PRIVATE name : TEXT
+    PRIVATE health : NUMBER
+    PRIVATE inventory : Inventory
+
+CONSTRUCTOR(n : TEXT, h : NUMBER, i : Inventory)
+    SET name TO n
+    SET health TO h
+    SET inventory TO i
+END CONSTRUCTOR
+
+METHODS
+
+    attack()
+        RETURN "Character Attack"
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Warrior EXTENDS Character
+
+Attributes
+    PRIVATE meleeStrength : NUMBER
+    PRIVATE heavyArmor : BOOLEAN
+
+CONSTRUCTOR(n : TEXT, h : NUMBER, i : Inventory, s : NUMBER)
+    CALL SUPER(n, h, i)
+    SET meleeStrength TO s
+    SET heavyArmor TO TRUE
+END CONSTRUCTOR
+
+METHODS
+
+    attack()
+        RETURN "Warrior attacks using melee strength"
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Mage EXTENDS Character
+
+Attributes
+    PRIVATE manaPool : NUMBER
+
+CONSTRUCTOR(n : TEXT, h : NUMBER, i : Inventory, m : NUMBER)
+    CALL SUPER(n, h, i)
+    SET manaPool TO m
+END CONSTRUCTOR
+
+METHODS
+
+    attack()
+
+        IF manaPool > 0 THEN
+            SET manaPool TO manaPool - 1
+            RETURN "Mage casts a magic spell"
+        ELSE
+            RETURN "Not enough mana"
+        END IF
+
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Archer EXTENDS Character
+
+Attributes
+    PRIVATE arrowSupply : NUMBER
+
+CONSTRUCTOR(n : TEXT, h : NUMBER, i : Inventory, a : NUMBER)
+    CALL SUPER(n, h, i)
+    SET arrowSupply TO a
+END CONSTRUCTOR
+
+METHODS
+
+    attack()
+
+        IF arrowSupply > 0 THEN
+            SET arrowSupply TO arrowSupply - 1
+            RETURN "Archer attacks using arrows"
+        ELSE
+            RETURN "No arrows available"
+        END IF
+
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Inventory
+
+Attributes
+    PRIVATE items : LIST<TEXT>
+
+CONSTRUCTOR()
+    SET items TO EMPTY LIST
+END CONSTRUCTOR
+
+METHODS
+
+    addItem(newItem : TEXT)
+        ADD newItem TO items
+    END METHOD
+
+END CLASS
+---------------------------
+TASK306
+CLASS Bill
+
+Attributes
+    PRIVATE billingPeriod : TEXT
+    PRIVATE dueDate : DATE
+    PRIVATE meterReading : MeterReading
+
+CONSTRUCTOR(p : TEXT, d : DATE, m : MeterReading)
+    SET billingPeriod TO p
+    SET dueDate TO d
+    SET meterReading TO m
+END CONSTRUCTOR
+
+METHODS
+
+    calculateAmountOwed()
+        RETURN 0
+    END METHOD
+
+END CLASS
+
+
+
+CLASS ElectricityBill EXTENDS Bill
+
+Attributes
+    PRIVATE ratePerUnit : REAL
+
+CONSTRUCTOR(p : TEXT, d : DATE, m : MeterReading, r : REAL)
+    CALL SUPER(p, d, m)
+    SET ratePerUnit TO r
+END CONSTRUCTOR
+
+METHODS
+
+    calculateAmountOwed()
+
+        SET unitsUsed TO meterReading.getConsumption()
+        RETURN unitsUsed * ratePerUnit
+
+    END METHOD
+
+END CLASS
+
+
+
+CLASS WaterBill EXTENDS Bill
+
+Attributes
+    PRIVATE ratePerLiter : REAL
+    PRIVATE standingCharge : REAL
+
+CONSTRUCTOR(p : TEXT, d : DATE, m : MeterReading, r : REAL, s : REAL)
+    CALL SUPER(p, d, m)
+    SET ratePerLiter TO r
+    SET standingCharge TO s
+END CONSTRUCTOR
+
+METHODS
+
+    calculateAmountOwed()
+
+        SET litersUsed TO meterReading.getConsumption()
+        RETURN (litersUsed * ratePerLiter) + standingCharge
+
+    END METHOD
+
+END CLASS
+
+
+
+CLASS GasBill EXTENDS Bill
+
+Attributes
+    PRIVATE ratePerUnit : REAL
+    PRIVATE winterSurcharge : REAL
+
+CONSTRUCTOR(p : TEXT, d : DATE, m : MeterReading, r : REAL, s : REAL)
+    CALL SUPER(p, d, m)
+    SET ratePerUnit TO r
+    SET winterSurcharge TO s
+END CONSTRUCTOR
+
+METHODS
+
+    calculateAmountOwed()
+
+        SET unitsUsed TO meterReading.getConsumption()
+        RETURN (unitsUsed * ratePerUnit) + winterSurcharge
+
+    END METHOD
+
+END CLASS
+
+
+
+CLASS MeterReading
+
+Attributes
+    PRIVATE startReading : REAL
+    PRIVATE endReading : REAL
+
+CONSTRUCTOR(s : REAL, e : REAL)
+    SET startReading TO s
+    SET endReading TO e
+END CONSTRUCTOR
+
+METHODS
+
+    getConsumption()
+        RETURN endReading - startReading
+    END METHOD
+
+END CLASS
+
+
+
+CLASS CustomerAccount
+
+Attributes
+    PRIVATE bills : LIST<Bill>
+
+CONSTRUCTOR()
+    SET bills TO EMPTY LIST
+END CONSTRUCTOR
+
+METHODS
+
+    addBill(newBill : Bill)
+        ADD newBill TO bills
+    END METHOD
+
+    calculateTotalAmount()
+
+        SET total TO 0
+
+        FOR EACH bill IN bills
+            SET total TO total + bill.calculateAmountOwed()
+        END FOR
+
+        RETURN total
+
+    END METHOD
+
+END CLASS
+---------------------------------
+TASK307
+CLASS Ride
+
+Attributes
+    PRIVATE pickupLocation : TEXT
+    PRIVATE dropOffLocation : TEXT
+    PRIVATE route : Route
+
+CONSTRUCTOR(p : TEXT, d : TEXT, r : Route)
+    SET pickupLocation TO p
+    SET dropOffLocation TO d
+    SET route TO r
+END CONSTRUCTOR
+
+METHODS
+
+    calculateFare()
+        RETURN 0
+    END METHOD
+
+END CLASS
+
+
+
+CLASS StandardRide EXTENDS Ride
+
+Attributes
+    PRIVATE distance : REAL
+    PRIVATE ratePerKilometer : REAL
+
+CONSTRUCTOR(p : TEXT, d : TEXT, r : Route, dis : REAL, rate : REAL)
+    CALL SUPER(p, d, r)
+    SET distance TO dis
+    SET ratePerKilometer TO rate
+END CONSTRUCTOR
+
+METHODS
+
+    calculateFare()
+        RETURN distance * ratePerKilometer
+    END METHOD
+
+END CLASS
+
+
+
+CLASS SharedRide EXTENDS StandardRide
+
+Attributes
+    PRIVATE numberOfPassengers : NUMBER
+
+CONSTRUCTOR(p : TEXT, d : TEXT, r : Route, dis : REAL, rate : REAL, n : NUMBER)
+    CALL SUPER(p, d, r, dis, rate)
+    SET numberOfPassengers TO n
+END CONSTRUCTOR
+
+METHODS
+
+    calculateFare()
+        RETURN CALL SUPER.calculateFare() / numberOfPassengers
+    END METHOD
+
+END CLASS
+
+
+
+CLASS PremiumRide EXTENDS Ride
+
+Attributes
+    PRIVATE distance : REAL
+    PRIVATE ratePerKilometer : REAL
+    PRIVATE comfortSurcharge : REAL
+
+CONSTRUCTOR(p : TEXT, d : TEXT, r : Route, dis : REAL, rate : REAL, s : REAL)
+    CALL SUPER(p, d, r)
+    SET distance TO dis
+    SET ratePerKilometer TO rate
+    SET comfortSurcharge TO s
+END CONSTRUCTOR
+
+METHODS
+
+    calculateFare()
+        RETURN (distance * ratePerKilometer) + comfortSurcharge
+    END METHOD
+
+END CLASS
+
+
+
+CLASS Route
+
+Attributes
+    PRIVATE waypoints : LIST<TEXT>
+
+CONSTRUCTOR()
+    SET waypoints TO EMPTY LIST
+END CONSTRUCTOR
+
+METHODS
+
+    addWaypoint(point : TEXT)
+        ADD point TO waypoints
+    END METHOD
+
+END CLASS
+
+
+
+
+
+
+
+
+
+
