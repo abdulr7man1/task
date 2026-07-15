@@ -1,0 +1,269 @@
+
+TASK317
+public class FibonacciSequence {
+    public static void main(String[] args) {
+
+        
+        int first = 0;
+        int second = 1;
+        int next;
+
+        
+        System.out.print(first + " " + second + " ");
+
+                for (int count = 3; count <= 15; count++) {
+            next = first + second; // Calculate next number
+            System.out.print(next + " ");
+
+
+            first = second;
+            second = next;
+        }
+    }
+}
+---------------------------
+TASK318
+void main() {
+
+
+    int number = 54321;
+    int reversedNumber = 0;
+    int digit;
+    int originalNumber = number;
+
+
+    while (number != 0) {
+        digit = number % 10;
+        reversedNumber = reversedNumber * 10 + digit;
+        number = number / 10;
+    }
+
+
+    IO.println("Original Number: " + originalNumber);
+    IO.println("Reversed Number: " + reversedNumber);
+}
+-------------------------------------------
+TASK319
+public class PalindromeChecker {
+    public static void main(String[] args) {
+
+        int number = 1221;
+        int originalNumber = number;
+        int reversedNumber = 0;
+        int digit;
+
+       
+        while (number != 0) {
+            digit = number % 10;
+            reversedNumber = reversedNumber * 10 + digit;
+            number /= 10;
+        }
+
+        System.out.println("Number: " + originalNumber);
+
+  
+        if (originalNumber == reversedNumber) {
+            System.out.println("The number is a palindrome.");
+        } else {
+            System.out.println("The number is not a palindrome.");
+        }
+    }
+}
+---------------------------------
+TASK320
+public class StudentGradeCalculator {
+    public static void main(String[] args) {
+
+        double grade1 = 85;
+        double grade2 = 90;
+        double grade3 = 80;
+        
+        double average = (grade1 + grade2 + grade3) / 3;
+
+        String status;
+
+       
+        if (average >= 90) {
+            status = "Excellent";
+        } else if (average >= 75) {
+            status = "Good";
+        } else if (average >= 60) {
+            status = "Pass";
+        } else {
+            status = "Fail";
+        }
+
+        System.out.println("Grade 1: " + grade1);
+        System.out.println("Grade 2: " + grade2);
+        System.out.println("Grade 3: " + grade3);
+        System.out.println("Average: " + average);
+        System.out.println("Status: " + status);
+    }
+}
+--------------------------------------
+TASK321
+public class DigitCounter {
+    public static void main(String[] args) {
+
+        int number = 123456;
+        int count = 0;
+
+        int originalNumber = number;
+
+      
+        while (number != 0) {
+            count++;
+            number /= 10;
+        }
+
+        System.out.println("Number: " + originalNumber);
+        System.out.println("Number of digits: " + count);
+    }
+}
+---------------------------------------
+TASK322
+public class LargestNumberFinder {
+    public static void main(String[] args) {
+
+        int[] numbers = {12, 45, 89, 34, 67};
+
+        int largest = numbers[0];
+
+               for (int i = 1; i < numbers.length; i++) {
+            if (numbers[i] > largest) {
+                largest = numbers[i];
+            }
+        }
+
+        System.out.println("Largest Number: " + largest);
+    }
+}
+---------------------
+TASK323
+public class EvenOddCounter {
+    public static void main(String[] args) {
+
+        int start = 1;
+        int end = 10;
+
+        int evenCount = 0;
+        int oddCount = 0;
+
+        for (int i = start; i <= end; i++) {
+            if (i % 2 == 0) {
+                evenCount++;
+            } else {
+                oddCount++;
+            }
+        }
+
+        System.out.println("Even Numbers Count: " + evenCount);
+        System.out.println("Odd Numbers Count: " + oddCount);
+    }
+}
+----------------------------
+TASK324
+public class MultiplicationCalculator {
+    public static void main(String[] args) {
+
+        int start = 1;
+        int end = 5;
+        int result = 1;
+
+               for (int i = start; i <= end; i++) {
+            result *= i;
+        }
+
+        System.out.println("Multiplication Result: " + result);
+    }
+}
+------------------------
+TASK325
+public class DecimalToBinary {
+    public static void main(String[] args) {
+
+        int number = 25;
+        int originalNumber = number;
+
+        String binary = "";
+        int remainder;
+
+                while (number > 0) {
+            remainder = number % 2;
+            binary = remainder + binary;
+            number /= 2;
+        }
+
+        System.out.println("Decimal Number: " + originalNumber);
+        System.out.println("Binary Number: " + binary);
+    }
+}
+----------------------------------------
+TASK326
+public class DigitFrequencyCounter {
+    public static void main(String[] args) {
+
+        int number = 122333;
+        int targetDigit = 3;
+        int count = 0;
+        int digit;
+
+        int originalNumber = number;
+
+                while (number != 0) {
+            digit = number % 10;
+
+            if (digit == targetDigit) {
+                count++;
+            }
+
+            number /= 10;
+        }
+
+        System.out.println("Number: " + originalNumber);
+        System.out.println("Target Digit: " + targetDigit);
+        System.out.println("Frequency: " + count);
+    }
+}
+--------------------------------------
+TASK327
+public class ArmstrongNumberChecker {
+    public static void main(String[] args) {
+
+        int number = 153;
+        int originalNumber = number;
+
+        int digit;
+        int sum = 0;
+        int count = 0;
+        int temp = number;
+        while (temp != 0) {
+            count++;
+            temp /= 10;
+        }
+
+        temp = number;
+        while (temp != 0) {
+            digit = temp % 10;
+
+            int power = 1;
+
+                       for (int i = 1; i <= count; i++) {
+                power *= digit;
+            }
+
+            sum += power;
+            temp /= 10;
+        }
+
+        System.out.println("Number: " + originalNumber);
+
+        if (sum == originalNumber) {
+            System.out.println("The number is an Armstrong number.");
+        } else {
+            System.out.println("The number is not an Armstrong number.");
+        }
+    }
+}
+------------------------------------------------
+
