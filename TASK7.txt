@@ -1,0 +1,1634 @@
+TASK308
+CLASS Claim
+
+Attributes
+
+    PRIVATE claimNumber : TEXT
+    PRIVATE dateFiled : DATE
+    PRIVATE status : TEXT
+    PRIVATE documentationFolder : DocumentationFolder
+
+
+CONSTRUCTOR(number : TEXT, date : DATE, folder : DocumentationFolder)
+
+    SET THIS.claimNumber TO number
+    SET THIS.dateFiled TO date
+    SET THIS.status TO "Submitted"
+    SET THIS.documentationFolder TO folder
+
+END CONSTRUCTOR
+
+
+METHODS
+
+    updateStatus(newStatus : TEXT)
+
+        SET status TO newStatus
+
+    END METHOD
+
+
+    getStatus()
+
+        RETURN status
+
+    END METHOD
+
+
+    getClaimNumber()
+
+        RETURN claimNumber
+
+    END METHOD
+
+
+    ABSTRACT METHOD calculatePayout()
+
+
+END CLASS
+
+
+
+CLASS VehicleClaim EXTENDS Claim
+
+Attributes
+
+    PRIVATE repairEstimate : REAL
+    PRIVATE excessAmount : REAL
+
+
+CONSTRUCTOR(number : TEXT, date : DATE, folder : DocumentationFolder, repair : REAL, excess : REAL)
+
+    CALL SUPER(number, date, folder)
+
+    SET repairEstimate TO repair
+    SET excessAmount TO excess
+
+END CONSTRUCTOR
+
+
+METHODS
+
+    calculatePayout()
+
+        SET payout TO repairEstimate - excessAmount
+
+        IF payout < 0 THEN
+            RETURN 0
+        ELSE
+            RETURN payout
+        END IF
+
+    END METHOD
+
+
+END CLASS
+
+
+
+CLASS MedicalClaim EXTENDS Claim
+
+Attributes
+
+    PRIVATE treatmentCost : REAL
+    PRIVATE medicalCoverageLimit : REAL
+
+
+CONSTRUCTOR(number : TEXT, date : DATE, folder : DocumentationFolder, cost : REAL, limit : REAL)
+
+    CALL SUPER(number, date, folder)
+
+    SET treatmentCost TO cost
+    SET medicalCoverageLimit TO limit
+
+END CONSTRUCTOR
+
+
+METHODS
+
+    calculatePayout()
+
+        IF treatmentCost <= medicalCoverageLimit THEN
+
+            RETURN treatmentCost
+
+        ELSE
+
+            RETURN medicalCoverageLimit
+
+        END IF
+
+    END METHOD
+
+
+END CLASS
+
+
+
+CLASS PropertyClaim EXTENDS Claim
+
+Attributes
+
+    PRIVATE damageValue : REAL
+    PRIVATE maintenancePercentage : REAL
+    PRIVATE properlyMaintained : BOOLEAN
+
+
+CONSTRUCTOR(number : TEXT, date : DATE, folder : DocumentationFolder, damage : REAL, percentage : REAL, maintained : BOOLEAN)
+
+    CALL SUPER(number, date, folder)
+
+    SET damageValue TO damage
+    SET maintenancePercentage TO percentage
+    SET properlyMaintained TO maintained
+
+END CONSTRUCTOR
+
+
+METHODS
+
+    calculatePayout()
+
+        IF properlyMaintained = TRUE THEN
+
+            RETURN damageValue
+
+        ELSE
+
+            RETURN damageValue - (damageValue * maintenancePercentage)
+
+        END IF
+
+    END METHOD
+
+
+END CLASS
+
+
+
+CLASS DocumentationFolder
+
+Attributes
+
+    PRIVATE documents : LIST<Document>
+
+
+CONSTRUCTOR()
+
+    SET documents TO EMPTY LIST
+
+END CONSTRUCTOR
+
+
+METHODS
+
+    addDocument(newDocument : Document)
+
+        ADD newDocument TO documents
+
+    END METHOD
+
+
+    getDocuments()
+
+        RETURN documents
+
+    END METHOD
+
+
+END CLASS
+
+
+
+CLASS Document
+
+Attributes
+
+    PRIVATE documentName : TEXT
+    PRIVATE documentType : TEXT
+
+
+CONSTRUCTOR(name : TEXT, type : TEXT)
+
+    SET THIS.documentName TO name
+    SET THIS.documentType TO type
+
+END CONSTRUCTOR
+
+
+END CLASS
+
+
+
+CLASS Policy
+
+Attributes
+
+    PRIVATE policyNumber : TEXT
+    PRIVATE claims : LIST<Claim>
+
+
+CONSTRUCTOR(number : TEXT)
+
+    SET THIS.policyNumber TO number
+    SET claims TO EMPTY LIST
+
+END CONSTRUCTOR
+
+
+METHODS
+
+    addClaim(newClaim : Claim)
+
+        ADD newClaim TO claims
+
+    END METHOD
+
+
+    calculateTotalPayout()
+
+        SET total TO 0
+
+        FOR EACH claim IN claims
+
+            SET total TO total + claim.calculatePayout()
+
+        END FOR
+
+        RETURN total
+
+    END METHOD
+
+
+END CLASS
+----------------------------------
+TASK309
+CLASS LoanItem
+
+Attributes
+
+    PRIVATE title : TEXT
+    PRIVATE barcode : TEXT
+    PRIVATE loanDuration : NUMBER
+    PRIVATE conditionReport : ConditionReport
+
+
+CONSTRUCTOR(t : TEXT, b : TEXT, duration : NUMBER, report : ConditionReport)
+
+    SET THIS.title TO t
+    SET THIS.barcode TO b
+    SET THIS.loanDuration TO duration
+    SET THIS.conditionReport TO report
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    getTitle()
+
+        RETURN title
+
+    END METHOD
+
+
+    getBarcode()
+
+        RETURN barcode
+
+    END METHOD
+
+
+    ABSTRACT METHOD calculateLateFee(daysOverdue : NUMBER)
+
+
+END CLASS
+
+
+
+
+CLASS StandardBook INHERITS LoanItem
+
+Attributes
+
+    PRIVATE dailyLateFee : REAL
+
+
+
+CONSTRUCTOR(t : TEXT, b : TEXT, duration : NUMBER, report : ConditionReport)
+
+    SUPER(t, b, duration, report)
+
+    SET dailyLateFee TO 0.50
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    OVERRIDE calculateLateFee(daysOverdue : NUMBER)
+
+        RETURN daysOverdue * dailyLateFee
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+CLASS ReferenceTextbook INHERITS LoanItem
+
+Attributes
+
+    PRIVATE dailyLateFee : REAL
+
+
+
+CONSTRUCTOR(t : TEXT, b : TEXT, duration : NUMBER, report : ConditionReport)
+
+    SUPER(t, b, duration, report)
+
+    SET dailyLateFee TO 2.00
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    OVERRIDE calculateLateFee(daysOverdue : NUMBER)
+
+        RETURN daysOverdue * dailyLateFee
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+CLASS JournalIssue INHERITS ReferenceTextbook
+
+Attributes
+
+    PRIVATE renewable : BOOLEAN
+
+
+
+CONSTRUCTOR(t : TEXT, b : TEXT, duration : NUMBER, report : ConditionReport)
+
+    SUPER(t, b, duration, report)
+
+    SET renewable TO TRUE
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    OVERRIDE calculateLateFee(daysOverdue : NUMBER)
+
+        RETURN SUPER.calculateLateFee(daysOverdue)
+
+    END METHOD
+
+
+
+    canRenew(daysOverdue : NUMBER)
+
+        IF daysOverdue > 0 THEN
+
+            RETURN FALSE
+
+        ELSE
+
+            RETURN renewable
+
+        END IF
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+CLASS ConditionReport
+
+Attributes
+
+    PRIVATE damageNotes : TEXT
+    PRIVATE conditionStatus : TEXT
+
+
+
+CONSTRUCTOR(notes : TEXT, status : TEXT)
+
+    SET THIS.damageNotes TO notes
+    SET THIS.conditionStatus TO status
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    getDamageNotes()
+
+        RETURN damageNotes
+
+    END METHOD
+
+
+
+    getConditionStatus()
+
+        RETURN conditionStatus
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+CLASS StudentAccount
+
+Attributes
+
+    PRIVATE studentName : TEXT
+    PRIVATE studentID : TEXT
+    PRIVATE loanItems : LIST OF LoanItem
+
+
+
+CONSTRUCTOR(name : TEXT, id : TEXT)
+
+    SET THIS.studentName TO name
+    SET THIS.studentID TO id
+    SET loanItems TO EMPTY LIST
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+
+
+    addLoanItem(item : LoanItem)
+
+        ADD item TO loanItems
+
+    END METHOD
+
+
+
+
+    calculateTotalLateFees(daysOverdue : NUMBER)
+
+        SET total TO 0
+
+
+        REPEAT FROM i = 1 TO LENGTH(loanItems)
+
+            SET total TO total + loanItems[i].calculateLateFee(daysOverdue)
+
+        END REPEAT
+
+
+        RETURN total
+
+    END METHOD
+
+
+
+END CLASS
+
+
+
+
+START
+
+
+    CREATE report AS ConditionReport("No damage", "Good")
+
+
+    CREATE book AS StandardBook(
+        "Java Programming",
+        "B001",
+        14,
+        report
+    )
+
+
+    CREATE textbook AS ReferenceTextbook(
+        "Data Structures",
+        "T001",
+        7,
+        report
+    )
+
+
+    CREATE journal AS JournalIssue(
+        "Computer Science Journal",
+        "J001",
+        5,
+        report
+    )
+
+
+
+    CREATE student AS StudentAccount(
+        "Ahmed",
+        "S001"
+    )
+
+
+
+    student.addLoanItem(book)
+
+    student.addLoanItem(textbook)
+
+    student.addLoanItem(journal)
+
+
+
+    DISPLAY student.calculateTotalLateFees(3)
+
+
+    DISPLAY journal.canRenew(0)
+
+    DISPLAY journal.canRenew(2)
+
+
+STOP
+---------------------------------------
+TASK310
+CLASS Ride
+
+Attributes
+
+    PRIVATE name : TEXT
+    PRIVATE location : TEXT
+    PRIVATE safetyLog : SafetyInspectionLog
+    PRIVATE queueSize : NUMBER
+
+
+CONSTRUCTOR(n : TEXT, l : TEXT, log : SafetyInspectionLog, q : NUMBER)
+
+    SET THIS.name TO n
+    SET THIS.location TO l
+    SET THIS.safetyLog TO log
+    SET THIS.queueSize TO q
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    getName()
+
+        RETURN name
+
+    END METHOD
+
+
+
+    getLocation()
+
+        RETURN location
+
+    END METHOD
+
+
+
+    getQueueSize()
+
+        RETURN queueSize
+
+    END METHOD
+
+
+
+    ABSTRACT METHOD calculateWaitTime()
+
+
+END CLASS
+
+
+
+
+CLASS RollerCoaster INHERITS Ride
+
+Attributes
+
+    PRIVATE carCapacity : NUMBER
+    PRIVATE rideCycleTime : REAL
+
+
+
+CONSTRUCTOR(n : TEXT, l : TEXT, log : SafetyInspectionLog, q : NUMBER, capacity : NUMBER, cycle : REAL)
+
+    SUPER(n, l, log, q)
+
+    SET carCapacity TO capacity
+    SET rideCycleTime TO cycle
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    OVERRIDE calculateWaitTime()
+
+        SET numberOfCars TO getQueueSize() / carCapacity
+
+        RETURN numberOfCars * rideCycleTime
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+CLASS WaterRide INHERITS Ride
+
+Attributes
+
+    PRIVATE boatCapacity : NUMBER
+    PRIVATE rideCycleTime : REAL
+    PRIVATE loadingTime : REAL
+
+
+
+CONSTRUCTOR(n : TEXT, l : TEXT, log : SafetyInspectionLog, q : NUMBER, capacity : NUMBER, cycle : REAL, load : REAL)
+
+    SUPER(n, l, log, q)
+
+    SET boatCapacity TO capacity
+    SET rideCycleTime TO cycle
+    SET loadingTime TO load
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    OVERRIDE calculateWaitTime()
+
+        SET numberOfBoats TO getQueueSize() / boatCapacity
+
+        RETURN numberOfBoats * (rideCycleTime + loadingTime)
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+CLASS VIPAccessRide INHERITS RollerCoaster
+
+Attributes
+
+    PRIVATE vipGuestsInLine : NUMBER
+
+
+
+CONSTRUCTOR(n : TEXT, l : TEXT, log : SafetyInspectionLog, q : NUMBER, capacity : NUMBER, cycle : REAL, vipGuests : NUMBER)
+
+    SUPER(n, l, log, q, capacity, cycle)
+
+    SET vipGuestsInLine TO vipGuests
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    OVERRIDE calculateWaitTime()
+
+        RETURN SUPER.calculateWaitTime()
+
+    END METHOD
+
+
+
+    calculateVIPWaitTime()
+
+        RETURN vipGuestsInLine * 1
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+CLASS SafetyInspectionLog
+
+Attributes
+
+    PRIVATE inspectionDate : TEXT
+    PRIVATE inspectionOutcome : TEXT
+
+
+
+CONSTRUCTOR(date : TEXT, outcome : TEXT)
+
+    SET THIS.inspectionDate TO date
+    SET THIS.inspectionOutcome TO outcome
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    getInspectionDate()
+
+        RETURN inspectionDate
+
+    END METHOD
+
+
+
+    getInspectionOutcome()
+
+        RETURN inspectionOutcome
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+CLASS Park
+
+Attributes
+
+    PRIVATE parkName : TEXT
+    PRIVATE rides : LIST OF Ride
+
+
+
+CONSTRUCTOR(name : TEXT)
+
+    SET THIS.parkName TO name
+    SET rides TO EMPTY LIST
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    addRide(newRide : Ride)
+
+        ADD newRide TO rides
+
+    END METHOD
+
+
+
+    displayRideWaitTimes()
+
+        REPEAT FROM i = 1 TO LENGTH(rides)
+
+            DISPLAY rides[i].getName()
+
+            DISPLAY rides[i].calculateWaitTime()
+
+        END REPEAT
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+START
+
+
+    CREATE log AS SafetyInspectionLog("2025-01-01", "Passed")
+
+
+    CREATE coaster AS RollerCoaster(
+        "Thunder Coaster",
+        "Zone A",
+        log,
+        200,
+        20,
+        5
+    )
+
+
+    CREATE waterRide AS WaterRide(
+        "Splash Ride",
+        "Zone B",
+        log,
+        150,
+        15,
+        4,
+        2
+    )
+
+
+    CREATE vipRide AS VIPAccessRide(
+        "VIP Coaster",
+        "Zone C",
+        log,
+        100,
+        20,
+        5,
+        10
+    )
+
+
+    CREATE park AS Park("Adventure Park")
+
+
+    park.addRide(coaster)
+
+    park.addRide(waterRide)
+
+    park.addRide(vipRide)
+
+
+
+    park.displayRideWaitTimes()
+
+
+    DISPLAY vipRide.calculateVIPWaitTime()
+
+
+STOP
+----------------------------------------
+TASK311
+CLASS Invoice
+
+Attributes
+
+    PRIVATE invoiceNumber : TEXT
+    PRIVATE dateIssued : TEXT
+    PRIVATE clientName : TEXT
+    PRIVATE paymentTerms : PaymentTerms
+
+
+CONSTRUCTOR(number : TEXT, date : TEXT, client : TEXT, terms : PaymentTerms)
+
+    SET THIS.invoiceNumber TO number
+    SET THIS.dateIssued TO date
+    SET THIS.clientName TO client
+    SET THIS.paymentTerms TO terms
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    getInvoiceNumber()
+
+        RETURN invoiceNumber
+
+    END METHOD
+
+
+    getClientName()
+
+        RETURN clientName
+
+    END METHOD
+
+
+    ABSTRACT METHOD calculateTotalAmount()
+
+
+END CLASS
+
+
+
+
+
+CLASS FixedPriceInvoice INHERITS Invoice
+
+Attributes
+
+    PRIVATE projectFee : REAL
+
+
+
+CONSTRUCTOR(number : TEXT, date : TEXT, client : TEXT, terms : PaymentTerms, fee : REAL)
+
+    SUPER(number, date, client, terms)
+
+    SET projectFee TO fee
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    OVERRIDE calculateTotalAmount()
+
+        RETURN projectFee
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+
+CLASS HourlyInvoice INHERITS Invoice
+
+Attributes
+
+    PRIVATE hourlyRate : REAL
+    PRIVATE hourEntries : LIST OF HourEntry
+
+
+
+CONSTRUCTOR(number : TEXT, date : TEXT, client : TEXT, terms : PaymentTerms, rate : REAL)
+
+    SUPER(number, date, client, terms)
+
+    SET hourlyRate TO rate
+    SET hourEntries TO EMPTY LIST
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+
+    addHourEntry(entry : HourEntry)
+
+        ADD entry TO hourEntries
+
+    END METHOD
+
+
+
+    OVERRIDE calculateTotalAmount()
+
+        SET total TO 0
+
+
+        REPEAT FROM i = 1 TO LENGTH(hourEntries)
+
+            IF hourEntries[i].isApproved() = TRUE THEN
+
+                SET total TO total + (hourEntries[i].getHours() * hourlyRate)
+
+            END IF
+
+        END REPEAT
+
+
+        RETURN total
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+
+CLASS RetainerInvoice INHERITS FixedPriceInvoice
+
+Attributes
+
+    PRIVATE includedHours : REAL
+    PRIVATE extraHoursWorked : REAL
+    PRIVATE extraHourlyRate : REAL
+
+
+
+CONSTRUCTOR(number : TEXT, date : TEXT, client : TEXT, terms : PaymentTerms, fee : REAL, included : REAL, totalHours : REAL, rate : REAL)
+
+    SUPER(number, date, client, terms, fee)
+
+    SET includedHours TO included
+    SET extraHourlyRate TO rate
+
+
+    IF totalHours > includedHours THEN
+
+        SET extraHoursWorked TO totalHours - includedHours
+
+    ELSE
+
+        SET extraHoursWorked TO 0
+
+    END IF
+
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+
+    OVERRIDE calculateTotalAmount()
+
+        SET total TO SUPER.calculateTotalAmount()
+
+
+        IF extraHoursWorked > 0 THEN
+
+            SET extraCharge TO extraHoursWorked * extraHourlyRate
+
+            SET total TO total + extraCharge
+
+        END IF
+
+
+        RETURN total
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+
+CLASS HourEntry
+
+Attributes
+
+    PRIVATE hours : REAL
+    PRIVATE approved : BOOLEAN
+
+
+
+CONSTRUCTOR(h : REAL)
+
+    SET hours TO h
+    SET approved TO FALSE
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+
+    approve()
+
+        SET approved TO TRUE
+
+    END METHOD
+
+
+
+    isApproved()
+
+        RETURN approved
+
+    END METHOD
+
+
+
+    getHours()
+
+        RETURN hours
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+
+CLASS PaymentTerms
+
+Attributes
+
+    PRIVATE dueDate : TEXT
+    PRIVATE lateInterestRate : REAL
+
+
+
+CONSTRUCTOR(date : TEXT, rate : REAL)
+
+    SET THIS.dueDate TO date
+    SET THIS.lateInterestRate TO rate
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+
+    getDueDate()
+
+        RETURN dueDate
+
+    END METHOD
+
+
+
+    getLateInterestRate()
+
+        RETURN lateInterestRate
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+
+CLASS FreelancerAccount
+
+Attributes
+
+    PRIVATE freelancerName : TEXT
+    PRIVATE invoices : LIST OF Invoice
+
+
+
+CONSTRUCTOR(name : TEXT)
+
+    SET THIS.freelancerName TO name
+    SET invoices TO EMPTY LIST
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+
+    addInvoice(newInvoice : Invoice)
+
+        ADD newInvoice TO invoices
+
+    END METHOD
+
+
+
+    calculateTotalIncome()
+
+        SET total TO 0
+
+
+        REPEAT FROM i = 1 TO LENGTH(invoices)
+
+            SET total TO total + invoices[i].calculateTotalAmount()
+
+        END REPEAT
+
+
+        RETURN total
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+
+START
+
+
+    CREATE terms AS PaymentTerms("2025-02-01", 0.05)
+
+
+
+    CREATE fixedInvoice AS FixedPriceInvoice(
+        "INV001",
+        "2025-01-01",
+        "Client A",
+        terms,
+        1000
+    )
+
+
+
+    CREATE hourlyInvoice AS HourlyInvoice(
+        "INV002",
+        "2025-01-01",
+        "Client B",
+        terms,
+        50
+    )
+
+
+
+    CREATE entry AS HourEntry(10)
+
+    entry.approve()
+
+    hourlyInvoice.addHourEntry(entry)
+
+
+
+    CREATE retainerInvoice AS RetainerInvoice(
+        "INV003",
+        "2025-01-01",
+        "Client C",
+        terms,
+        500,
+        20,
+        30,
+        25
+    )
+
+
+
+    CREATE account AS FreelancerAccount("Ahmed")
+
+
+
+    account.addInvoice(fixedInvoice)
+
+    account.addInvoice(hourlyInvoice)
+
+    account.addInvoice(retainerInvoice)
+
+
+
+    DISPLAY account.calculateTotalIncome()
+
+
+STOP
+------------------------------------------
+TASK312
+CLASS Server
+
+Attributes
+
+    PRIVATE serialNumber : TEXT
+    PRIVATE uptime : REAL
+    PRIVATE hardwareSpecification : HardwareSpecification
+
+
+CONSTRUCTOR(serial : TEXT, time : REAL, hardware : HardwareSpecification)
+
+    SET THIS.serialNumber TO serial
+    SET THIS.uptime TO time
+    SET THIS.hardwareSpecification TO hardware
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    getSerialNumber()
+
+        RETURN serialNumber
+
+    END METHOD
+
+
+
+    getUptime()
+
+        RETURN uptime
+
+    END METHOD
+
+
+
+    ABSTRACT METHOD calculateLoadPercentage()
+
+
+END CLASS
+
+
+
+
+
+CLASS WebServer INHERITS Server
+
+Attributes
+
+    PRIVATE activeConnections : NUMBER
+    PRIVATE maxConnections : NUMBER
+
+
+
+CONSTRUCTOR(serial : TEXT, time : REAL, hardware : HardwareSpecification, active : NUMBER, max : NUMBER)
+
+    SUPER(serial, time, hardware)
+
+    SET activeConnections TO active
+    SET maxConnections TO max
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    OVERRIDE calculateLoadPercentage()
+
+        RETURN (activeConnections / maxConnections) * 100
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+
+CLASS DatabaseServer INHERITS Server
+
+Attributes
+
+    PRIVATE currentQueriesPerSecond : REAL
+    PRIVATE maxQueriesPerSecond : REAL
+    PRIVATE acceptingConnections : BOOLEAN
+
+
+
+CONSTRUCTOR(serial : TEXT, time : REAL, hardware : HardwareSpecification, current : REAL, max : REAL)
+
+    SUPER(serial, time, hardware)
+
+    SET currentQueriesPerSecond TO current
+    SET maxQueriesPerSecond TO max
+    SET acceptingConnections TO TRUE
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    OVERRIDE calculateLoadPercentage()
+
+        SET load TO (currentQueriesPerSecond / maxQueriesPerSecond) * 100
+
+
+        IF load >= 100 THEN
+
+            SET acceptingConnections TO FALSE
+
+        END IF
+
+
+        RETURN load
+
+    END METHOD
+
+
+
+    canAcceptConnections()
+
+        RETURN acceptingConnections
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+
+CLASS CacheServer INHERITS DatabaseServer
+
+Attributes
+
+    PRIVATE cacheHitRatio : REAL
+
+
+
+CONSTRUCTOR(serial : TEXT, time : REAL, hardware : HardwareSpecification, current : REAL, max : REAL, hitRatio : REAL)
+
+    SUPER(serial, time, hardware, current, max)
+
+    SET cacheHitRatio TO hitRatio
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    OVERRIDE calculateLoadPercentage()
+
+        SET databaseLoad TO SUPER.calculateLoadPercentage()
+
+        SET adjustedLoad TO databaseLoad * (1 - cacheHitRatio)
+
+
+        RETURN adjustedLoad
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+
+CLASS HardwareSpecification
+
+Attributes
+
+    PRIVATE cpu : TEXT
+    PRIVATE ram : REAL
+    PRIVATE storage : REAL
+
+
+
+CONSTRUCTOR(c : TEXT, r : REAL, s : REAL)
+
+    SET THIS.cpu TO c
+    SET THIS.ram TO r
+    SET THIS.storage TO s
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    getCPU()
+
+        RETURN cpu
+
+    END METHOD
+
+
+
+    getRAM()
+
+        RETURN ram
+
+    END METHOD
+
+
+
+    getStorage()
+
+        RETURN storage
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+
+CLASS Rack
+
+Attributes
+
+    PRIVATE rackID : TEXT
+    PRIVATE servers : LIST OF Server
+
+
+
+CONSTRUCTOR(id : TEXT)
+
+    SET THIS.rackID TO id
+    SET servers TO EMPTY LIST
+
+END CONSTRUCTOR
+
+
+
+METHODS
+
+    addServer(newServer : Server)
+
+        ADD newServer TO servers
+
+    END METHOD
+
+
+
+    calculateAverageLoad()
+
+        SET totalLoad TO 0
+
+
+        REPEAT FROM i = 1 TO LENGTH(servers)
+
+            SET totalLoad TO totalLoad + servers[i].calculateLoadPercentage()
+
+        END REPEAT
+
+
+        RETURN totalLoad / LENGTH(servers)
+
+    END METHOD
+
+
+END CLASS
+
+
+
+
+
+START
+
+
+    CREATE hardware AS HardwareSpecification(
+        "Intel CPU",
+        32,
+        1000
+    )
+
+
+
+    CREATE webServer AS WebServer(
+        "WEB001",
+        99.5,
+        hardware,
+        500,
+        1000
+    )
+
+
+
+    CREATE databaseServer AS DatabaseServer(
+        "DB001",
+        98.0,
+        hardware,
+        800,
+        1000
+    )
+
+
+
+    CREATE cacheServer AS CacheServer(
+        "CACHE001",
+        97.0,
+        hardware,
+        700,
+        1000,
+        0.25
+    )
+
+
+
+    CREATE rack AS Rack("R001")
+
+
+
+    rack.addServer(webServer)
+
+    rack.addServer(databaseServer)
+
+    rack.addServer(cacheServer)
+
+
+
+    DISPLAY rack.calculateAverageLoad()
+
+
+
+    DISPLAY databaseServer.canAcceptConnections()
+
+
+STOP
