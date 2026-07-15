@@ -1,0 +1,86 @@
+TASK313
+public class RectangleCalculator {
+
+    public static void main(String[] args) {
+
+        double length = 12.5;
+        double width = 8.0;
+
+        double area;
+        double perimeter;
+
+        area = length * width;
+        perimeter = 2 * (length + width);
+        System.out.println("Length: " + length);
+        System.out.println("Width: " + width);
+        System.out.println("Area: " + area);
+        System.out.println("Perimeter: " + perimeter);
+    }
+}
+-------------------------------------------
+TASK314
+public class EvenNumberAnalyzer {
+
+    public static void main(String[] args) {
+        int limit = 20;
+        int count = 0;
+        int sum = 0;
+        for (int i = 1; i <= limit; i++) {
+
+           
+            if (i % 2 == 0) {
+
+              
+                System.out.println(i);
+                count++;
+
+                sum += i;
+            }
+        }
+        System.out.println("Total Even Numbers: " + count);
+        System.out.println("Sum of Even Numbers: " + sum);
+    }
+}
+---------------------------------------------
+TASK215
+public class FactorialCalculator {
+
+    public static void main(String[] args) {
+
+      
+        int number = 7;
+        long factorial = 1;
+        int i = 1;
+
+       
+        while (i <= number) {
+
+            factorial *= i;
+            i++;
+        }
+
+      
+        System.out.println("Number: " + number);
+        System.out.println("Factorial: " + factorial);
+    }
+}
+-------------------------------------------------
+TASK216
+public class MultiplicationTable {
+
+    public static void main(String[] args) {
+
+
+        int base = 9;
+        int result;
+
+        for (int i = 1; i <= 10; i++) {
+
+
+            result = base * i;
+
+             System.out.println(base + " x " + i + " = " + result);
+        }
+    }
+}
+
