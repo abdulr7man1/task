@@ -1,0 +1,216 @@
+TASK288
+Class Book
+    Attributes:
+        title
+        author
+        price
+        genre
+
+    Constructor(title, author, price, genre)
+
+    Method displayBook()
+
+Class Customer
+    Attributes:
+        customerID
+        name
+        purchaseHistory
+
+    Constructor(customerID, name)
+
+    Method buyBook(book)
+    Method addPurchase(sale)
+    Method viewPurchaseHistory()
+
+Class Sale
+    Attributes:
+        book
+        customer
+        sellingPrice
+        saleDate
+
+    Constructor(book, customer, sellingPrice, saleDate)
+
+    Method displaySale()
+
+Class Bookshop
+    Attributes:
+        shopName
+        books
+        sales
+
+    Constructor(shopName)
+
+    Method addBook(book)
+    Method sellBook(customer, book)
+    Method viewSales()
+----------------------------------------
+TASK289
+Class Book
+    Attributes:
+        title
+        author
+        price
+        genre
+
+    Constructor(title, author, price, genre)
+
+    Method displayBook()
+
+Class Customer
+    Attributes:
+        customerID
+        name
+        purchaseHistory
+
+    Constructor(customerID, name)
+
+    Method buyBook(book)
+    Method addPurchase(sale)
+    Method viewPurchaseHistory()
+
+Class Sale
+    Attributes:
+        book
+        customer
+        sellingPrice
+        saleDate
+
+    Constructor(book, customer, sellingPrice, saleDate)
+
+    Method displaySale()
+
+Class Bookshop
+    Attributes:
+        shopName
+        books
+        sales
+
+    Constructor(shopName)
+
+    Method addBook(book)
+    Method sellBook(customer, book)
+    Method viewSales()
+----------------------------------------
+TASK290
+Class Student
+    Attributes:
+        studentID
+        name
+        attempts
+
+    Constructor(studentID, name)
+
+    Method takeExam()
+    Method viewAttempts()
+
+Class Exam
+    Attributes:
+        examTitle
+        questions
+        timeLimit
+
+    Constructor(examTitle, timeLimit)
+
+    Method addQuestion()
+
+Class Question
+    Attributes:
+        questionText
+        correctAnswer
+        pointValue
+
+    Constructor(questionText, correctAnswer, pointValue)
+
+    Method checkAnswer()
+
+Class Attempt
+    Attributes:
+        student
+        exam
+        selectedAnswers
+        startTime
+
+    Constructor(student, exam)
+
+    Method submitAnswer()
+    Method calculateScore()
+    Method isTimeExpired()
+----------------------------------------
+TASK291
+Class Member
+    Attributes:
+        memberID
+        name
+        plan
+        bookings
+
+    Constructor(memberID, name, plan)
+
+    Method calculateRemainingHours()
+
+Class MembershipPlan
+    Attributes:
+        planName
+        monthlyQuota
+
+    Constructor(planName, monthlyQuota)
+
+    Method displayPlan()
+
+Class Room
+    Attributes:
+        roomID
+        roomName
+        bookings
+
+    Constructor(roomID, roomName)
+
+    Method checkAvailability()
+    Method addBooking()
+
+Class Booking
+    Attributes:
+        member
+        room
+        date
+        duration
+
+    Constructor(member, room, date, duration)
+
+    Method reserveRoom()
+----------------------------------------
+TASK292
+Class Trainer
+    Attributes:
+        trainerID
+        name
+        sessions
+
+    Constructor(trainerID, name)
+
+    Method addSession()
+    Method viewSessions()
+
+Class Client
+    Attributes:
+        clientID
+        name
+        contactNumber
+        sessions
+
+    Constructor(clientID, name, contactNumber)
+
+    Method bookSession()
+    Method viewSessions()
+
+Class Session
+    Attributes:
+        date
+        duration
+        workoutType
+        client
+
+    Constructor(date, duration, workoutType, client)
+
+    Method displaySession()
